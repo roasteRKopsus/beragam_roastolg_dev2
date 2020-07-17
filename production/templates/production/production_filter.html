@@ -1,0 +1,25 @@
+<style>
+form { 
+margin: 0 auto; 
+width:250px;
+}
+</style>
+
+
+
+
+<div class="custom-select" style="width:200px;">
+  <select>{{myFilter2.form}}</select>
+</div>
+
+<!-- <div> class='card'>
+	<form method="get">
+		{{myFilter2.form}}
+			<input type="submit"/>
+	</form>
+</div> -->
+{% for object in myFilter.qs %}
+
+<li> {{ object.beans_name}}, {{object.roast_date}}, {{object.karantina}} </li>
+
+{% endfor %}
