@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<style>
+form { 
+margin: 0 auto; 
+width:250px;
+}
+</style>
+
+
+
+
+  
+<script>
+  $(function() {
+    $( ".datepicker" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      yearRange: "1900:2020",
+      // You can put more options here.
+
+    });
+  });
+  </script>
+
+
+<div class="container">
+	<form action='.' method='POST'>{% csrf_token %}
+    	{{ form.as_p }}
+    	<input type='submit' value='Save' />
+	</form>
+        <!-- Page Content goes here -->
+</div>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,29 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+ <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+  $(function() {
+    $( ".datepicker" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      yearRange: "1900:2020",
+      // You can put more options here.
+
+    });
+  });
+  </script
+
+
+{% for object in object_list %}
+     <li> - <a href='{{ object }}'><h1>Beans :{{ object.beans_name }}<h1><h2>Batch 	:{{object.batch_number}}<h2><h3> Roast Date	:{{object.roast_date}}<h3>{{ value|length }}</a></li>
+{% endfor %}
+
+
+
+{% endblock %}

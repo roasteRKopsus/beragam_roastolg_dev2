@@ -1,0 +1,10 @@
+
+<form method="get">
+{{myFilter.form}}
+<input type="submit"/>
+</form>
+{% for object in myFilter.qs %}
+
+<li> {{ object.beans_name}}, {{object.roast_date}}, {{object.karantina}} </li>
+
+{% endfor %}

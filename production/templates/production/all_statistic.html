@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+{% block content %}
+<div class='row'>
+	<div class='col-sm-6'>
+		<canvas id="myChart" width="200" height="200"></canvas>
+	</div>
+	<div class='col-sm-6'>
+		<canvas id="myChart2" width="200" height="200"></canvas>
+	</div>
+</div>
+<script>
+var endpoint = '/api/chart/data/'
+var karantina = []
+var labels = []
+var agtron = []
+var biji =[]
+for(var i=0, keys=Object.keys(agtron), l=keys.length; i<l; i++) {
+    alert(agtron[i].agtron_meter);
+} 
+
+
+;
+$.ajax({
+    method: "GET",
+    url: endpoint,
+    success: function(data){
+        labels = data.labels
+        karantina = data.karantina
+        agtron = data.agtronval
+        biji = data.queryset_blend
+        setChart()
+
+
+    },
+    error: function(error_data){
+        console.log("error")
+        console.log(error_data)
+    }
+})
+function setChart(){
+		var ctx = document.getElementById("myChart");
+		var ctx2 = document.getElementById("myChart2");
+    	var myChart = new Chart(ctx, {
+    		type: 'pie',
+    		data: {
+    			labels: labels,
+    			datasets: [{
+    				label: 'succesful roast stats',
+    				data: karantina,
+    				backgroundColor: [
+					'#696969', '#308080', '#A9A9A9', '#C0C0C0', '#D3D3D3'
+					],
+					borderColor:[
+					'#996969', '#708080', '#E9A9A9', '#C0C0C0', '#D3D3D3'
+					]
+
+    			}]
+    		}
+    	})
+    
+    	var myChart2 = new Chart(ctx2, {
+    		type: 'line',
+    		data: {
+    			labels: biji,
+    			datasets: [{
+    				label: 'agtron meter stats',
+    				data: agtron,
+    				backgroundColor: [
+					'#696969', '#308080', '#A9A9A9', '#C0C0C0', '#D3D3D3'
+					],
+					borderColor:[
+					'#996969', '#708080', '#E9A9A9', '#C0C0C0', '#D3D3D3'
+					]
+
+    			}]
+    		}
+    	})
+    }
+
+
+
+    
+
+
+
+
+  
+    
+
+// var ctx = document.getElementById("myChart");
+// var myPieChart = new Chart(ctx, {
+// type: 'pie',
+// data: {
+// 	datasets: [{
+// 		data: karantina,
+		// backgroundColor: [
+		// '#696969', '#308080', '#A9A9A9', '#C0C0C0', '#D3D3D3'
+		// ],
+// 		label: 'test'
+// 	}],
+// 	labels: labels
+// },
+// options: {
+// 	responsive: true
+// }
+// };
+
+
+</script>
+
+
+{% endblock %}
+
+
+
+
+
+
+
