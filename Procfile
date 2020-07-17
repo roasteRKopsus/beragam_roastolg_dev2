@@ -1,0 +1,1 @@
+web: gunicorn beragam_roastlog.wsgi
