@@ -7,7 +7,7 @@ django-daterangefilter==1.0.0
 django-filter==2.3.0
 django-import-export==2.3.0
 django-multiselectfield==0.1.12
-django-suit==2.0a1
+-e git://github.com/darklow/django-suit.git@v2#egg=django-suit
 djangorestframework==3.11.0
 et-xmlfile==1.0.1
 gunicorn==20.0.4
