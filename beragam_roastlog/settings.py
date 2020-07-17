@@ -149,3 +149,5 @@ STATICFILES_DIRS = [
 ]
 
 django_heroku.settings(locals())
+
+SESSION_COOKIE_AGE = 60 * 120
