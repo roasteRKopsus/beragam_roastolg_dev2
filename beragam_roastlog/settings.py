@@ -150,4 +150,4 @@ STATICFILES_DIRS = [
 
 django_heroku.settings(locals())
 
-SESSION_EXPIRE_AT_BROWSER_CLOSE =False
+SESSION_EXPIRE_AT_BROWSER_CLOSE =True
