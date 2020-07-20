@@ -121,7 +121,6 @@ class Roaster(models.Model):
 	roaster_pass_check = models.BooleanField(default=False)
 	catatan_roaster = models.CharField(max_length=100, default='-')
 
-
 	
 	def get_absolute_url(self):
 		return reverse("products:product-detail", kwargs= {'id': self.id})
@@ -135,6 +134,6 @@ class Roaster(models.Model):
 	persentase_susut = property (_get_depreciation)
 
 	umur_roastbean = property(_get_roastage)
-	
+
 
 
