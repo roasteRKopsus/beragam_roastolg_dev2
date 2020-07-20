@@ -135,6 +135,6 @@ class Roaster(models.Model):
 	persentase_susut = property (_get_depreciation)
 
 	umur_roastbean = property(_get_roastage)
-	total = Roaster.objects.aggregate(Sum( 'berat_akhir'))
+	total = self.objects.aggregate(Sum( 'berat_akhir'))
 
 
