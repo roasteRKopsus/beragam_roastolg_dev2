@@ -25,7 +25,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 #SECRET_KEY = 'i!q7z0nve_mpf&zn7*4br12f*%)&kfdkd4%l72e$kq#9vjo3em'
 SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['beragamtest.herokuapp.com']
 
@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'daterangefilter',
     'django_admin_listfilter_dropdown',
     'django.contrib.admin',
+    'admin_totals',
    
 ]
 
