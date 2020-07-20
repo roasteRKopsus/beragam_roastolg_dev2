@@ -36,7 +36,7 @@ class RoasterAdmin(ExportActionMixin, ModelAdminTotals, admin.ModelAdmin):
 'catatan_roaster',
 'umur_roastbean')
 
-	 list_totals = [('berat_akhir', lambda field: Coalesce(Sum(field), 0)), ('persentase_susut', Avg)]
+	list_totals = [('berat_akhir', lambda field: Coalesce(Sum(field), 0)), ('persentase_susut', Avg)]
 
 
 
