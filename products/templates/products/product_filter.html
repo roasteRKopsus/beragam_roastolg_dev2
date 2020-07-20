@@ -3,7 +3,7 @@
 {{myFilter.form}}
 <input type="submit"/>
 </form>
-{% for object in myFilter.qs %}
+{% for object in myFilter %}
 
 <li> {{ object.beans_name}}, {{object.roast_date}}, {{object.karantina}} </li>
 
