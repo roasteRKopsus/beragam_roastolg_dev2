@@ -24,7 +24,7 @@ class BeansGudangAdmin(ExportActionMixin, admin.ModelAdmin):
 
 
 
-class RoasterAdmin(ExportActionMixin, ModelAdminTotals, admin.ModelAdmin):
+class RoasterAdmin(ExportActionMixin, admin.ModelAdmin):
 	list_display = ('roast_date',
 'beans_name',
 'mesin',
@@ -35,8 +35,6 @@ class RoasterAdmin(ExportActionMixin, ModelAdminTotals, admin.ModelAdmin):
 'roaster_pass_check',
 'catatan_roaster',
 'umur_roastbean')
-
-	list_totals = [('berat_akhir', lambda field: Coalesce(Sum(field), 0)), ('persentase_susut', Avg)]
 
 
 
