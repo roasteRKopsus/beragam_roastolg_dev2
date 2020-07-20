@@ -6,8 +6,7 @@ from import_export.admin import ExportActionMixin
 from daterangefilter.filters import PastDateRangeFilter
 from django_admin_listfilter_dropdown.filters import ( DropdownFilter, ChoiceDropdownFilter, RelatedDropdownFilter)
 from django.db.models import Sum, Avg
-from admin_totals.admin import ModelAdminTotals
-from django.db.models.functions import Coalesce
+
 
 
 class QCSampleBeanAdmin(ExportActionMixin, admin.ModelAdmin):
@@ -34,12 +33,6 @@ class RoasterAdmin(ExportActionMixin, ModelAdminTotals, admin.ModelAdmin):
 'catatan_roaster',
 'umur_roastbean')
 
-
-	
-	list_filter=(('roast_date', PastDateRangeFilter),'mesin','roaster_pass_check', ('beans_name', RelatedDropdownFilter))
-	# prepopulated_fields = {'susut':('persentase_susut')}
-	change_list_template = None
-	list_totals = [('berat_akhir', lambda field: Coalesce(Sum(field),0)),('berat_masuk', Avg)]
 
 
 admin.site.register(BeansGudang, BeansGudangAdmin)
