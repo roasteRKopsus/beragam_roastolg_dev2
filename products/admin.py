@@ -2,7 +2,7 @@
 from django.contrib import admin
 
 from .models import *
-from import_export.admin import ExportActionMixin
+from import_export.admin import ImportExportActionMixin
 from daterangefilter.filters import PastDateRangeFilter
 from django_admin_listfilter_dropdown.filters import ( DropdownFilter, ChoiceDropdownFilter, RelatedDropdownFilter)
 
@@ -18,7 +18,7 @@ class BeansGudangAdmin(ExportActionMixin, admin.ModelAdmin):
 	list_display = ('sample_code','biji','vendor_name', 'lot_number', 'bag_amount','berat_kopi_in_kg', 'qc_acceptance')
 
 
-class RoasterAdmin(ExportActionMixin, admin.ModelAdmin):
+class RoasterAdmin(ImportExportActionMixin, admin.ModelAdmin):
 	list_display = ('roast_date',
 'beans_name',
 'mesin',
