@@ -34,7 +34,7 @@ ALLOWED_HOSTS = ['beragamtest.herokuapp.com']
 
 INSTALLED_APPS = [
 
-    'import_export',
+    
 
     'beragam_roastlog.apps.SuitConfig',
     'django.contrib.auth',
@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'production',
     'django_filters',
     'multiselectfield',
-    
+    'import_export',
     'rest_framework',
     'daterangefilter',
     'django_admin_listfilter_dropdown',
