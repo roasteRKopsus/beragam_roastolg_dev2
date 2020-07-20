@@ -3,6 +3,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 import datetime
+from django.db.models import Sum
 
 date = datetime.date.today()
 
@@ -101,9 +102,12 @@ class Roaster(models.Model):
 	machine = (('froco-15', 'froco-15'), ('froco-25', 'froco-25'))
 	post_harvest = (('dry', 'dry'),('wet','wet'))
 	nama_biji = (('cianjur','cianjur'),('ciwidey','ciwidey'))
+	
 	warna_biji = (('wajar','wajar'), ('tidak wajar', 'tidak wajar'))
+	shift= (('Pagi','Pagi'),('Siang', 'Siang'))
 	roast_date = models.DateField(auto_now_add=True)
 	beans_name = models.ForeignKey(BeansGudang, on_delete=models.CASCADE)
+
 	mesin = models.CharField(max_length=50, choices=machine, default='')
 	process = models.CharField(max_length=50, choices=post_harvest, default='')
 	batch_number = models.PositiveIntegerField(max_length=50)
@@ -116,6 +120,7 @@ class Roaster(models.Model):
 	
 	roaster_pass_check = models.BooleanField(default=False)
 	catatan_roaster = models.CharField(max_length=100, default='-')
+	Total = Roaster.objects.aggregate(Sum('berat_masuk', 'berat_akhir'))
 
 	
 	def get_absolute_url(self):
