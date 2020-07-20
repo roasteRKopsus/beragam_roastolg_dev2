@@ -2,7 +2,7 @@
 from django.contrib import admin
 
 from .models import *
-from import_export.admin import ImportExportActionMixin
+from import_export.admin import ExportActionMixin, ImportExportModelAdmin
 from daterangefilter.filters import PastDateRangeFilter
 from django_admin_listfilter_dropdown.filters import ( DropdownFilter, ChoiceDropdownFilter, RelatedDropdownFilter)
 
