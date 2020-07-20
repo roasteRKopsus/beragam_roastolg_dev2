@@ -109,7 +109,7 @@ class Roaster(models.Model):
 	beans_name = models.ForeignKey(BeansGudang, on_delete=models.CASCADE)
 
 	mesin = models.CharField(max_length=50, choices=machine, default='')
-	shift = models.CharField(max_length=60, choices=masuk, default='Pagi')
+	shift = models.CharField(max_length=60, choices=masuk, default=)
 	process = models.CharField(max_length=50, choices=post_harvest, default='')
 	batch_number = models.PositiveIntegerField(max_length=50)
 	beans_color = models.CharField(max_length=50, choices=warna_biji, default='')

@@ -6,7 +6,6 @@ from import_export.admin import ExportActionMixin
 from daterangefilter.filters import PastDateRangeFilter
 from django_admin_listfilter_dropdown.filters import ( DropdownFilter, ChoiceDropdownFilter, RelatedDropdownFilter)
 from django.db.models import Sum, Avg
-from admin_totals.admin import ModelAdminTotals
 from django.db.models.functions import Coalesce
 
 
@@ -22,7 +21,7 @@ class BeansGudangAdmin(ExportActionMixin, admin.ModelAdmin):
 
 
 
-class RoasterAdmin(ExportActionMixin, ModelAdminTotals, admin.ModelAdmin):
+class RoasterAdmin(ExportActionMixin, admin.ModelAdmin):
 	list_display = ('roast_date',
 'beans_name',
 'mesin',
@@ -38,8 +37,6 @@ class RoasterAdmin(ExportActionMixin, ModelAdminTotals, admin.ModelAdmin):
 	
 	list_filter=(('roast_date', PastDateRangeFilter),'mesin','roaster_pass_check', ('beans_name', RelatedDropdownFilter))
 	# prepopulated_fields = {'susut':('persentase_susut')}
-	change_list_template = None
-
 
 admin.site.register(BeansGudang, BeansGudangAdmin)
 admin.site.register(Roaster, RoasterAdmin)
