@@ -25,6 +25,7 @@ class RoasterAdmin(ExportActionMixin, admin.ModelAdmin):
 	list_display = ('roast_date',
 'beans_name',
 'mesin',
+'shift',
 'batch_number',
 'berat_masuk',
 'berat_akhir',
