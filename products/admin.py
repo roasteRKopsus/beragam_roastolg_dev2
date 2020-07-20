@@ -6,7 +6,8 @@ from import_export.admin import ExportActionMixin
 from daterangefilter.filters import PastDateRangeFilter
 from django_admin_listfilter_dropdown.filters import ( DropdownFilter, ChoiceDropdownFilter, RelatedDropdownFilter)
 from django.db.models import Sum, Avg
-from django.db.models import Count, Sum
+from admin_totals.admin import ModelAdminTotals
+
 from django.contrib.admin.views.main import ChangeList
 
 
@@ -19,23 +20,11 @@ class QCSampleBeanAdmin(ExportActionMixin, admin.ModelAdmin):
 class BeansGudangAdmin(ExportActionMixin, admin.ModelAdmin):
 	list_display = ('sample_code','biji','vendor_name', 'lot_number', 'bag_amount','berat_kopi_in_kg', 'qc_acceptance')
 
-class MyChangeList(ChangeList):
-
-	def get_results(self, *args, **kwargs):
-		super(MyChangeList, self).get_results(*args, **kwargs)
-		q = self.result_list.aggregate(total_berat_akhir=Sum('berat_akhir'))
-		self.berat_akhir_count = q['total_berat_akhir']
 
 
 
-class RoasterAdmin(ExportActionMixin, admin.ModelAdmin):
 
-	def get_changelist(self, request):
-		return MyChangeList
-
-	class Meta:
-		model = Roaster
-
+class RoasterAdmin(ExportActionMixin, ModelAdminTotals, admin.ModelAdmin):
 	list_display = ('roast_date',
 'beans_name',
 'mesin',
@@ -46,6 +35,8 @@ class RoasterAdmin(ExportActionMixin, admin.ModelAdmin):
 'roaster_pass_check',
 'catatan_roaster',
 'umur_roastbean')
+
+	 list_totals = [('berat_akhir', lambda field: Coalesce(Sum(field), 0)), ('persentase_susut', Avg)]
 
 
 
