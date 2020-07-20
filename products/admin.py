@@ -18,7 +18,7 @@ class BeansGudangAdmin(ExportActionMixin, admin.ModelAdmin):
 	list_display = ('sample_code','biji','vendor_name', 'lot_number', 'bag_amount','berat_kopi_in_kg', 'qc_acceptance')
 
 
-class RoasterAdmin(admin.ModelAdmin):
+class RoasterAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 	list_display = ('roast_date',
 'beans_name',
 'mesin',
@@ -36,9 +36,6 @@ class RoasterAdmin(admin.ModelAdmin):
 	# prepopulated_fields = {'susut':('persentase_susut')}
 	change_list_template = None
 
-@admin.register(Roaster)
-class RoasterAdmin(ImportExportModelAdmin):
-	pass
 
 admin.site.register(BeansGudang, BeansGudangAdmin)
 admin.site.register(Roaster, RoasterAdmin)
