@@ -31,7 +31,7 @@ class MyChangeList(ChangeList):
 class RoasterAdmin(ExportActionMixin, admin.ModelAdmin):
 
 	def get_changelist(self, request):
-    	return MyChangeList
+		return MyChangeList
 
 	class Meta:
 		model = Roaster
