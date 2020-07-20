@@ -120,7 +120,7 @@ class Roaster(models.Model):
 	
 	roaster_pass_check = models.BooleanField(default=False)
 	catatan_roaster = models.CharField(max_length=100, default='-')
-	
+
 
 	
 	def get_absolute_url(self):
@@ -135,6 +135,6 @@ class Roaster(models.Model):
 	persentase_susut = property (_get_depreciation)
 
 	umur_roastbean = property(_get_roastage)
-	Roaster.objects.aggregate(Sum('berat_masuk', 'berat_akhir'))
+	total = Roaster.objects.aggregate(Sum( 'berat_akhir'))
 
 
