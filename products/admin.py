@@ -6,9 +6,8 @@ from import_export.admin import ExportActionMixin
 from daterangefilter.filters import PastDateRangeFilter
 from django_admin_listfilter_dropdown.filters import ( DropdownFilter, ChoiceDropdownFilter, RelatedDropdownFilter)
 from django.db.models import Sum, Avg
-from admin_totals.admin import ModelAdminTotals
 
-from django.contrib.admin.views.main import ChangeList
+
 
 
 
