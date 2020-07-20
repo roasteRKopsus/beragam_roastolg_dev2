@@ -49,6 +49,10 @@ class TotalAveragesChangeList(ChangeList):
 
 
 class RoasterAdmin(ExportActionMixin, admin.ModelAdmin):
+
+	def get_changelist(self, request, **kwargs):
+		return TotalAveragesChangeList
+
 	list_display = ('roast_date',
 'beans_name',
 'mesin',
@@ -67,8 +71,7 @@ class RoasterAdmin(ExportActionMixin, admin.ModelAdmin):
 	#change_list_template = None
 	#total = Roaster.objects.aggregate(Sum( 'berat_akhir'))
 
-	def get_changelist(self, request, **kwargs):
-		return TotalAveragesChangeList
+	
 
 
 admin.site.register(BeansGudang, BeansGudangAdmin)
