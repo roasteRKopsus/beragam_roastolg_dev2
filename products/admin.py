@@ -32,7 +32,7 @@ class RoasterAdmin(ExportActionMixin, admin.ModelAdmin):
 		return MyChangeList
 
 	class Meta:
-        model = Roaster
+		model = Roaster
 
 
 
