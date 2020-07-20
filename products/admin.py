@@ -18,7 +18,7 @@ class BeansGudangAdmin(ExportActionMixin, admin.ModelAdmin):
 	list_display = ('sample_code','biji','vendor_name', 'lot_number', 'bag_amount','berat_kopi_in_kg', 'qc_acceptance')
 
 
-class RoasterAdmin(ImportExportActionMixin, admin.ModelAdmin):
+class RoasterAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 	list_display = ('roast_date',
 'beans_name',
 'mesin',
