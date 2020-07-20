@@ -34,7 +34,7 @@ class RoasterAdmin(ExportActionMixin, admin.ModelAdmin):
 	
 	list_filter=(('roast_date', PastDateRangeFilter),'mesin','roaster_pass_check', ('beans_name', RelatedDropdownFilter))
 	# prepopulated_fields = {'susut':('persentase_susut')}
-	change_list_template = 'admin/import_export/change_list_export.html'
+	change_list_template = None
 
 
 admin.site.register(BeansGudang, BeansGudangAdmin)
