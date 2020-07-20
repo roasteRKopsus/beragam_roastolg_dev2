@@ -27,14 +27,14 @@ def product_update_view(request, id=id):
 
 
 def product_list_view(request):
-    queryset = Product.objects.all() # list of objects
+    queryset = Roaster.objects.all() # list of objects
     context = {
         "object_list": queryset
     }
     return render(request, "products/product_list.html", context)
 
 def search(request):
-    product_list = Product.objects.all()
+    product_list = Roaster.objects.all()
     myFilter = RoasterFilter()
     context = {
     'myFilter':myFilter
@@ -43,7 +43,7 @@ def search(request):
     return render(request, 'products/product_filter.html', context )
 
 def product_detail_view(request, id):
-    obj = get_object_or_404(Product, id=id)
+    obj = get_object_or_404(Roaster, id=id)
     context = {
         "object": obj
     }
@@ -51,7 +51,7 @@ def product_detail_view(request, id):
 
 
 def product_delete_view(request, id):
-    obj = get_object_or_404(Product, id=id)
+    obj = get_object_or_404(Roaster, id=id)
     if request.method == "POST":
         obj.delete()
         return redirect('../../')
