@@ -27,10 +27,7 @@ class TotalAveragesChangeList(ChangeList):
 	fields_to_total = ['berat_akhir', 'berat_masuk']
 
 	def get_total_values(self, queryset):
-	"""
-	Get the totals
-	"""
-	#basically the total parameter is an empty instance of the given model
+
 		total =  Roaster()
 		total.custom_alias_name = "Totals" 
 		for field in self.fields_to_total:
