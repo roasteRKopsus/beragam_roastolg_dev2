@@ -96,6 +96,9 @@ class BeansGudang(models.Model):
 
 	def __str__(self):
 		return self.biji
+
+	class Meta:
+		verbose_name = 'Bahan Baku'
 	
 
 class Roaster(models.Model):

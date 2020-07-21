@@ -63,6 +63,11 @@ class ProductionDiv(models.Model):
 	umur_blend = property(_get_umurblend)
 
 
+
+		class Meta:
+			verbose_name = 'blend section'
+
+
 	# def __str__(self):
 	# 	return  (self.jenis_blend, self.nomor_set)
 
