@@ -24,7 +24,7 @@ admin.site.register(KomposisiBean, KomposisiBeanAdmin)
 
 class ProductionDivAdmin(ExportActionMixin, admin.ModelAdmin):
 	# inlines = [InlineProductioDiv]
-	list_display = ('product_code','tanggal_blend','roast_date', 'nomor_set', 'jenis_blend', 'production_check_pass', 'cupping', 'qc_check_pass', 'pack_status', 'umur_blend')
+	list_display = ('product_code','tanggal_blend','roast_date', 'nomor_set', 'jenis_blend','weight', 'production_check_pass', 'cupping', 'qc_check_pass', 'pack_status', 'umur_blend')
 	search_fields = ('tanggal_blend', 'jenis_blend')
 	list_filter = (('tanggal_blend', PastDateRangeFilter),('roast_date', PastDateRangeFilter),'jenis_blend','cupping','production_check_pass', 'qc_check_pass',)
 	prepopulated_fields = {'product_code':('blend_code', 'nomor_set','tanggal_blend')}
