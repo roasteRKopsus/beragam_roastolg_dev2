@@ -99,6 +99,7 @@ class BeansGudang(models.Model):
 
 	class Meta:
 		verbose_name = 'Bahan Baku'
+		verbose_name_plural = 'Bahan Baku'
 	
 
 class Roaster(models.Model):
