@@ -6,7 +6,7 @@ import datetime
 from datetime import date
 from django.db.models import Sum
 
-date = date.now()
+date = datetime.now()
 
 
 class QCSampleBean(models.Model):
