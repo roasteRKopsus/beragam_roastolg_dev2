@@ -21,6 +21,11 @@ class BeansGudangAdmin(ExportActionMixin, admin.ModelAdmin):
 
 
 class RoasterResource(resources.ModelResource):
+	author = fields.Field(
+        column_name='beans_name',
+        attribute='beans_name',
+        widget=ForeignKeyWidget(BeansGudang, 'biji'))
+
 	class Meta:
 		model = Roaster
 
