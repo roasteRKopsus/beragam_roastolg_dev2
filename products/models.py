@@ -5,7 +5,7 @@ from django.utils import timezone
 import datetime
 from django.db.models import Sum
 
-date = datetime.date.today()
+date = timezone.now()
 
 
 class QCSampleBean(models.Model):
