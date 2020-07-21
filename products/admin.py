@@ -37,6 +37,7 @@ class RoasterAdmin(ExportActionMixin, admin.ModelAdmin):
 'mesin',
 'shift',
 'batch_number',
+'moisture_content',
 'berat_masuk',
 'berat_akhir',
 'persentase_susut',
