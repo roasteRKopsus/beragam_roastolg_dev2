@@ -65,7 +65,7 @@ class ProductionDiv(models.Model):
 
 
 	class Meta:
-		verbose_name = 'blending section'
+		verbose_name = 'Blend & Packing'
 
 
 	# def __str__(self):
