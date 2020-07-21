@@ -8,6 +8,8 @@ from django_admin_listfilter_dropdown.filters import ( DropdownFilter, ChoiceDro
 from django.db.models import Sum, Avg
 from django.db.models.functions import Coalesce
 from import_export import resources
+from import_export import fields, resources
+from import_export.widgets import ForeignKeyWidget
 
 
 class QCSampleBeanAdmin(ExportActionMixin, admin.ModelAdmin):
@@ -21,7 +23,7 @@ class BeansGudangAdmin(ExportActionMixin, admin.ModelAdmin):
 
 
 class RoasterResource(resources.ModelResource):
-	author = fields.Field(
+	beans_name = fields.Field(
         column_name='beans_name',
         attribute='beans_name',
         widget=ForeignKeyWidget(BeansGudang, 'biji'))
