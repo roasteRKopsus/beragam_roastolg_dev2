@@ -119,7 +119,7 @@ class Roaster(models.Model):
 	beans_color = models.CharField(max_length=50, choices=warna_biji, default='')
 	
 	density = models.DecimalField(max_digits=19, decimal_places=3, default=0)
-	moisture_content = models.DecimalField(max_digits=19, decimal_places=1, default=0, '%' )
+	moisture_content = models.DecimalField(max_digits=19, decimal_places=1, default=0, )
 	berat_masuk = models.DecimalField(max_digits=19, decimal_places=2)
 	berat_akhir = models.DecimalField(max_digits=19, decimal_places=2)
 	
