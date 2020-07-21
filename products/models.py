@@ -132,7 +132,7 @@ class Roaster(models.Model):
 	def _get_roastage(self):
 		return(date-self.roast_date)
 
-	persentase_susut = property (_get_depreciatio3)
+	persentase_susut = property (_get_depreciation)
 
 	umur_roastbean = property(_get_roastage)
 
