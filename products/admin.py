@@ -7,6 +7,7 @@ from daterangefilter.filters import PastDateRangeFilter
 from django_admin_listfilter_dropdown.filters import ( DropdownFilter, ChoiceDropdownFilter, RelatedDropdownFilter)
 from django.db.models import Sum, Avg
 from django.db.models.functions import Coalesce
+from import_export import resources
 
 
 class QCSampleBeanAdmin(ExportActionMixin, admin.ModelAdmin):
@@ -19,7 +20,9 @@ class BeansGudangAdmin(ExportActionMixin, admin.ModelAdmin):
 
 
 
-
+class RoasterResource(resources.ModelResource):
+	class Meta:
+		model = Roaster
 
 class RoasterAdmin(ExportActionMixin, admin.ModelAdmin):
 	list_display = ('roast_date',
