@@ -22,12 +22,26 @@ class QCSampleBeanAdmin(ExportActionMixin, admin.ModelAdmin):
 class BeansGudangAdmin(ExportActionMixin, admin.ModelAdmin):
 	list_display = ('sample_code','biji','vendor_name', 'lot_number', 'bag_amount','berat_kopi_in_kg', 'qc_acceptance')
 
-class MyChangeList(ChangeList):
-	def get_results(self, *args, **kwargs):
-		super(MyChangeList, self).get_results(*args, **kwargs)
-		q = self.result_list.aggregate(weight_sum=Sum('berat_akhir'))
-		self.berat_count = q['weight_sum']
+class TotalAveragesChangeList(ChangeList):
 
+	fields_to_total = ['berat_akhir', 'berat_masuk']
+
+	def get_total_values(self, queryset):
+	"""
+	Get the totals
+	"""
+	#basically the total parameter is an empty instance of the given model
+		total =  Roaster()
+		total.custom_alias_name = "Totals" 
+		for field in self.fields_to_total:
+	    	setattr(total, field, queryset.aggregate(Sum(field)).items()[0][1])
+		return total
+
+	def get_results(self, request):
+		super(TotalAveragesChangeList, self).get_results(request)
+		total = self.get_total_values(self.query_set)
+		len(self.result_list)
+		self.result_list._result_cache.append(total)
 
 class RoasterResource(resources.ModelResource):
 	beans_name = fields.Field(
@@ -37,6 +51,9 @@ class RoasterResource(resources.ModelResource):
 
 	class Meta:
 		model = Roaster
+	
+	def get_changelist(self, request, **kwargs):
+		return TotalAveragesChangeList
 
 class RoasterAdmin(ExportActionMixin, admin.ModelAdmin):
 	list_display = ('roast_date',
