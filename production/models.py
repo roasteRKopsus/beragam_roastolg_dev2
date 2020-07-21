@@ -27,6 +27,7 @@ class ProductionDiv(models.Model):
 	# nama_biji = BeansName.objects.all()
 	# jenis_beans = BeansName.objects.all()
 	tanggal_blend = models.DateField()
+	roast_date = models.DateField(default=date)
 	nomor_set = models.PositiveIntegerField(max_length=50)
 	komposisi = models.ForeignKey(KomposisiBean, on_delete=models.CASCADE)
 	mesin = (MultiSelectField(choices=mesin))
