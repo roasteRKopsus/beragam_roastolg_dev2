@@ -31,7 +31,7 @@ class TotalAveragesChangeList(ChangeList):
 		total =  Roaster()
 		total.custom_alias_name = "Totals" 
 		for field in self.fields_to_total:
-	    	setattr(total, field, queryset.aggregate(Sum(field)).items()[0][1])
+			setattr(total, field, queryset.aggregate(Sum(field)).items()[0][1])
 		return total
 
 	def get_results(self, request):
