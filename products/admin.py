@@ -10,6 +10,8 @@ from django.db.models.functions import Coalesce
 from import_export import resources
 from import_export import fields, resources
 from import_export.widgets import ForeignKeyWidget
+from django.contrib.admin.views.main import ChangeList
+from django.db.models import Count, Sum
 
 
 class QCSampleBeanAdmin(ExportActionMixin, admin.ModelAdmin):
@@ -20,6 +22,11 @@ class QCSampleBeanAdmin(ExportActionMixin, admin.ModelAdmin):
 class BeansGudangAdmin(ExportActionMixin, admin.ModelAdmin):
 	list_display = ('sample_code','biji','vendor_name', 'lot_number', 'bag_amount','berat_kopi_in_kg', 'qc_acceptance')
 
+class MyChangeList(ChangeList):
+	def get_results(self, *args, **kwargs):
+		super(MyChangeList, self).get_results(*args, **kwargs)
+		q = self.result_list.aggregate(weight_sum=Sum('berat_akhir'))
+		self.berat_count = q['weight_sum']
 
 
 class RoasterResource(resources.ModelResource):
