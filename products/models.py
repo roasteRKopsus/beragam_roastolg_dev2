@@ -3,10 +3,9 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 import datetime
-from datetime import date
 from django.db.models import Sum
 
-date = datetime.now()
+date = datetime.date.today()
 
 
 class QCSampleBean(models.Model):
