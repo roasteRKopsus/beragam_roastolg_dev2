@@ -24,6 +24,7 @@ class ProductionDiv(models.Model):
 	nama_blend = (('kenangan_blend','kenangan_blend'),('tetangga_blend','tetangga_blend'), 
 		('cipete_blend','cipete_blend'),('ciung_wanara','ciung_wanara'),('waste_coffe','waste_coffe'))
 	mesin = (('froco-15','froco-15'), ('froco-25','froco-25'))
+	masuk= (('Pagi','Pagi'),('Siang', 'Siang'))
 	# nama_biji = BeansName.objects.all()
 	# jenis_beans = BeansName.objects.all()
 	tanggal_blend = models.DateField()
@@ -31,6 +32,7 @@ class ProductionDiv(models.Model):
 	nomor_set = models.PositiveIntegerField(max_length=50)
 	komposisi = models.ForeignKey(KomposisiBean, on_delete=models.CASCADE)
 	mesin = (MultiSelectField(choices=mesin))
+	shift = models.CharField(max_length=100, choices=masuk, default='Pagi')
 
 	jenis_blend = models.ForeignKey(BlendName, on_delete=models.CASCADE)
 	blend_code = models.CharField(max_length=50)
