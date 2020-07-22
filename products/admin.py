@@ -22,28 +22,28 @@ class QCSampleBeanAdmin(ExportActionMixin, admin.ModelAdmin):
 class BeansGudangAdmin(ExportActionMixin, admin.ModelAdmin):
 	list_display = ('sample_code','biji','vendor_name', 'lot_number', 'bag_amount','berat_kopi_in_kg', 'qc_acceptance')
 
-# class PengambilanGreenbeanAdmin(ExportActionMixin, admin.ModelAdmin):
-# 	list_display =(
+class PengambilanGreenbeanAdmin(ExportActionMixin, admin.ModelAdmin):
+	list_display =(
 
 
-# 	'tanggal',
-# 	'beans_name',
-# 	'jumlah_diambil',
-# 	'mesin',
-# 	'shifts',
-# 	'pic',
-# 	'keterangan'
-# )
-# 	list_filter =(
+	'tanggal',
+	'beans_name',
+	'jumlah_diambil',
+	'mesin',
+	'shifts',
+	'pic',
+	'keterangan'
+)
+	list_filter =(
 	
-# 	'tanggal',
-# 	'beans_name',
-# 	'jumlah_diambil',
-# 	'mesin',
-# 	'shifts',
-# 	'pic',
-# 	'keterangan'
-# )
+	'tanggal',
+	'beans_name',
+	'jumlah_diambil',
+	'mesin',
+	'shifts',
+	'pic',
+	'keterangan'
+)
 
 class TotalAveragesChangeList(ChangeList):
 
