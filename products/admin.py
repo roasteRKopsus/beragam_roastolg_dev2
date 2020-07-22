@@ -99,4 +99,4 @@ class RoasterAdmin(ExportActionMixin, admin.ModelAdmin):
 admin.site.register(BeansGudang, BeansGudangAdmin)
 admin.site.register(Roaster, RoasterAdmin)
 admin.site.register(QCSampleBean, QCSampleBeanAdmin)
-admin.site.register(PengambilanGreenbean, PengambilanGreenbeanAdmin)
+# admin.site.register(PengambilanGreenbean, PengambilanGreenbeanAdmin)
