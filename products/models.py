@@ -145,15 +145,15 @@ class Roaster(models.Model):
 
 
 
-class PengambilanGreenbean(models.Model):
-	machine = (('froco-15', 'froco-15'), ('froco-25', 'froco-25'))
-	masuk= (('Pagi','Pagi'),('Siang', 'Siang'))
-	tanggal = models.DateField(default=date)
-	beans_name = models.ForeignKey(BeansGudang, on_delete=models.CASCADE)
-	jumlah_diambil = models.DecimalField(max_digits=10, decimal_places=2)
-	mesin = models.CharField(max_length=50, choices=machine, default='-')
-	shifts = models.CharField(max_length=50, choices=masuk, default='-')
-	pic = models.CharField(max_length=50, default='-')
-	keterangan = models.CharField(max_length=100, default='-')
+# class PengambilanGreenbean(models.Model):
+# 	machine = (('froco-15', 'froco-15'), ('froco-25', 'froco-25'))
+# 	masuk= (('Pagi','Pagi'),('Siang', 'Siang'))
+# 	tanggal = models.DateField(default=date)
+# 	beans_name = models.ForeignKey(BeansGudang, on_delete=models.CASCADE)
+# 	jumlah_diambil = models.DecimalField(max_digits=10, decimal_places=2)
+# 	mesin = models.CharField(max_length=50, choices=machine, default='-')
+# 	shifts = models.CharField(max_length=50, choices=masuk, default='-')
+# 	pic = models.CharField(max_length=50, default='-')
+# 	keterangan = models.CharField(max_length=100, default='-')
 
 
