@@ -32,7 +32,7 @@ class ProductionDiv(models.Model):
 	nomor_set = models.PositiveIntegerField(max_length=50)
 	komposisi = models.ForeignKey(KomposisiBean, on_delete=models.CASCADE)
 	mesin = (MultiSelectField(choices=mesin))
-	shift = models.CharField(max_length=60, choices=masuk, default='')
+	# shift = models.CharField(max_length=60, choices=masuk, default='')
 
 	jenis_blend = models.ForeignKey(BlendName, on_delete=models.CASCADE)
 	blend_code = models.CharField(max_length=50)
