@@ -14,13 +14,13 @@ from django.contrib.admin.views.main import ChangeList
 from django.db.models import Count, Sum
 
 
-# class QCSampleBeanAdmin(ExportActionMixin, admin.ModelAdmin):
-# 	list_display =(
-# 		'sample_code','sample_date','cupping_date','biji','jenis_kopi','Crop_year', 'vendor_name','total_score')
-# 	list_filter=('sample_code',('sample_date', PastDateRangeFilter),'cupping_date','biji','jenis_kopi','Crop_year', 'vendor_name','total_score')
+class QCSampleBeanAdmin(ExportActionMixin, admin.ModelAdmin):
+	list_display =(
+		'sample_code','sample_date','cupping_date','biji','jenis_kopi','Crop_year', 'vendor_name','total_score')
+	list_filter=('sample_code',('sample_date', PastDateRangeFilter),'cupping_date','biji','jenis_kopi','Crop_year', 'vendor_name','total_score')
 
-# class BeansGudangAdmin(ExportActionMixin, admin.ModelAdmin):
-# 	list_display = ('sample_code','biji','vendor_name', 'lot_number', 'bag_amount','berat_kopi_in_kg', 'qc_acceptance')
+class BeansGudangAdmin(ExportActionMixin, admin.ModelAdmin):
+	list_display = ('sample_code','biji','vendor_name', 'lot_number', 'bag_amount','berat_kopi_in_kg', 'qc_acceptance')
 
 # class PengambilanGreenbeanAdmin(ExportActionMixin, admin.ModelAdmin):
 # 	list_display =(
@@ -99,4 +99,4 @@ class RoasterAdmin(ExportActionMixin, admin.ModelAdmin):
 admin.site.register(BeansGudang, BeansGudangAdmin)
 admin.site.register(Roaster, RoasterAdmin)
 admin.site.register(QCSampleBean, QCSampleBeanAdmin)
-# admin.site.register(PengambilanGreenbean, PengambilanGreenbeanAdmin)
+admin.site.register(PengambilanGreenbean, PengambilanGreenbeanAdmin)
