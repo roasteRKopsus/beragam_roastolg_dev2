@@ -22,6 +22,29 @@ class QCSampleBeanAdmin(ExportActionMixin, admin.ModelAdmin):
 class BeansGudangAdmin(ExportActionMixin, admin.ModelAdmin):
 	list_display = ('sample_code','biji','vendor_name', 'lot_number', 'bag_amount','berat_kopi_in_kg', 'qc_acceptance')
 
+class PengambilanGreenbeanAdmin(ExportActionMixin, admin.ModelAdmin):
+	list_display =(
+
+
+	'tanggal',
+	'beans_name',
+	'jumlah_diambil',
+	'mesin',
+	'shift',
+	'pic',
+	'keterangan'
+)
+	list_filter =(
+	
+	'tanggal',
+	'beans_name',
+	'jumlah_diambil',
+	'mesin',
+	'shift',
+	'pic',
+	'keterangan'
+)
+
 class TotalAveragesChangeList(ChangeList):
 
 	fields_to_total = ['berat_akhir', 'berat_masuk']
@@ -76,4 +99,4 @@ class RoasterAdmin(ExportActionMixin, admin.ModelAdmin):
 admin.site.register(BeansGudang, BeansGudangAdmin)
 admin.site.register(Roaster, RoasterAdmin)
 admin.site.register(QCSampleBean, QCSampleBeanAdmin)
-
+admin.site.register(PengambilanGreenbean, PengambilanGreenbeanAdmin)
