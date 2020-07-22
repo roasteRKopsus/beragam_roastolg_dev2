@@ -152,7 +152,7 @@ class PengambilanGreenbean(models.Model):
 	beans_name = models.ForeignKey(BeansGudang, on_delete=models.CASCADE)
 	jumlah_diambil = models.DecimalField(max_digits=10, decimal_places=2)
 	mesin = models.CharField(max_length=50, choices=machine, default='-')
-	shift = models.CharField(max_length=50, choices=masuk, default='-')
+	shifts = models.CharField(max_length=50, choices=masuk, default='-')
 	pic = models.CharField(max_length=50, default='-')
 	keterangan = models.CharField(max_length=100, default='-')
 

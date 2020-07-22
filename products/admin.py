@@ -30,7 +30,7 @@ class PengambilanGreenbeanAdmin(ExportActionMixin, admin.ModelAdmin):
 	'beans_name',
 	'jumlah_diambil',
 	'mesin',
-	'shift',
+	'shifts',
 	'pic',
 	'keterangan'
 )
@@ -40,7 +40,7 @@ class PengambilanGreenbeanAdmin(ExportActionMixin, admin.ModelAdmin):
 	'beans_name',
 	'jumlah_diambil',
 	'mesin',
-	'shift',
+	'shifts',
 	'pic',
 	'keterangan'
 )
