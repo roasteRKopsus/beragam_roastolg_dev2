@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-import django_heroku
+# import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -27,7 +27,9 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['beragamtest.herokuapp.com']
+# ALLOWED_HOSTS = ['beragamtest.herokuapp.com']
+# 127.0.0.1
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -53,6 +55,7 @@ INSTALLED_APPS = [
     'django_admin_listfilter_dropdown',
     'django.contrib.admin',
     'admin_totals',
+    'receipe',
    
 ]
 
@@ -151,6 +154,6 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'beragam_roastlog/static')
 ]
 
-django_heroku.settings(locals())
+# django_heroku.settings(locals())
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE =True

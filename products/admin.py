@@ -14,36 +14,195 @@ from django.contrib.admin.views.main import ChangeList
 from django.db.models import Count, Sum
 
 
-class QCSampleBeanAdmin(ExportActionMixin, admin.ModelAdmin):
-	list_display =(
-		'sample_code','sample_date','cupping_date','biji','jenis_kopi','Crop_year', 'vendor_name','total_score')
-	list_filter=('sample_code',('sample_date', PastDateRangeFilter),'cupping_date','biji','jenis_kopi','Crop_year', 'vendor_name','total_score')
+class RoasterResource(resources.ModelResource):
+	roast_date = fields.Field(attribute='roast_date')
+	beans_name = fields.Field(
+		attribute='beans_name',
+		column_name='beans_name',
+		widget=ForeignKeyWidget(BeansGudang, 'beans_name')
+		)
+	mesin = fields.Field(attribute='mesin')
+	shift = fields.Field(attribute='shift')
+	process = fields.Field(attribute='process')
+	batch_number= fields.Field(attribute='batch_number')
+	beans_color = fields.Field(attribute='beans_color')
+	density = fields.Field(attribute='density')
+	moisture = fields.Field(attribute='moisture')
+	raw = fields.Field(attribute='raw')
+	roasted = fields.Field(attribute='roasted')
+	persentase_susut = fields.Field(attribute='persentase_susut')
+	roaster_pass_check = fields.Field(attribute='roaster_pass_check')
+	catatan_roaster = fields.Field(attribute='catatan_roaster')	
+	umur_roastbean = fields.Field(attribute='umur_roastbean')
+
+
+class PengambilanGreenbeanResource(resources.ModelResource):
+	beans_name = fields.Field(
+        column_name='beans_name',
+        attribute='beans_name',
+        widget=ForeignKeyWidget(BeansGudang, 'beans_name'))
+
+	class Meta:
+		model = PengambilanGreenbean
+
+class BeansGudangResource(resources.ModelResource):
+	last_update = fields.Field(attribute='last_update')
+	sample_code = fields.Field(
+		attribute='sample_code',
+		column_name='beans_name',
+		widget=ForeignKeyWidget(BeansCode, 'sample_code')
+		)
+	beans_name = fields.Field(attribute='beans_name')
+	jenis_kopi = fields.Field(attribute='jenis_kopi')
+	variety = fields.Field(attribute='variety')
+	origin =  fields.Field(attribute='origin')
+	paska_panen = fields.Field(attribute='paska_panen') 
+	crop_year = fields.Field(attribute='Crop_year')
+	vendor_name = fields.Field(attribute='vendor_name')
+	lot_number  = fields.Field(attribute='lot_number')
+	bag =  fields.Field(attribute='bag')
+	qty_bag = fields.Field(attribute='qty_bag')
+	inherited_stock = fields.Field(attribute='inherited_stock')
+	initial_stock = fields.Field(attribute='initial_stock')
+	price_kilo_idr = fields.Field(attribute='price_kilo_idr')
+	stock_status = fields.Field(attribute='stock_status')
+	stock_update = fields.Field(attribute='stock_update')
+	beans_usage_amount = fields.Field(attribute='beans_usage_amount')
+	beans_usage_value = fields.Field(attribute='beans_usage_value')
+	beans_usage_percent = fields.Field(attribute='beans_usage_percent')
+	depreciation_average = fields.Field(attribute='depreciation_average')
+	roasted = fields.Field(attribute='roasted')
+	
+	
+
+	qc_acceptance = fields.Field(attribute='qc_acceptance')
+	moisture_check = fields.Field(attribute='moisture_check')
+	primary_defect = fields.Field(attribute='primary_defect')
+	secondary_defect = fields.Field(attribute='secondary_defect')
+	aroma_greenbean = fields.Field(attribute='aroma_greenbean')
+	fragrance_score = fields.Field(attribute='fragrance_score')
+	fragrance_intensity = fields.Field(attribute='fragrance_intensity')
+	fragrance_notes = fields.Field(attribute='fragrance_notes')
+	flavor_score = fields.Field(attribute='flavor_score')
+	flavor_intensity = fields.Field(attribute='flavor_intensity')
+	flavor_notes = fields.Field(attribute='flavor_notes')
+	aftertaste_score = fields.Field(attribute='aftertaste_score')
+	aftertaste_notes = fields.Field(attribute='aftertaste_notes')
+	acidity_score = fields.Field(attribute='acidity_score')
+	acidity_intensity = fields.Field(attribute='acidity_intensity')
+	acidity_notes = fields.Field(attribute='acidity_notes')
+	body_score = fields.Field(attribute='body_score')
+	body_intensity = fields.Field(attribute='body_intensity')
+	body_notes = fields.Field(attribute='body_notes')
+	balance_score = fields.Field(attribute='balance_score')
+	uniformity_score = fields.Field(attribute='uniformity_score')
+	cleancup_score = fields.Field(attribute='cleancup_score')
+	overal_cup = fields.Field(attribute='overal_cup')
+	defect = fields.Field(attribute='defect')
+	cup_score = fields.Field(attribute='cup_score')
+
+
+class BeansCodeAdmin(ExportActionMixin, admin.ModelAdmin):
+	list_display= (
+
+
+	'code',
+	'beans_name',
+	'jenis_kopi',
+	'variety',
+	'origin',
+	'paska_panen',
+	'vendor_name'
+
+		)
+
+	list_filter= (
+
+
+	'code',
+	'beans_name',
+	'jenis_kopi',
+	'variety',
+	'origin',
+	'paska_panen',
+	'vendor_name'
+
+	)
+
+
 
 class BeansGudangAdmin(ExportActionMixin, admin.ModelAdmin):
-	list_display = ('sample_code','biji','vendor_name', 'lot_number', 'bag_amount','berat_kopi_in_kg', 'qc_acceptance')
+	list_display = (
 
-# class PengambilanGreenbeanAdmin(ExportActionMixin, admin.ModelAdmin):
-# 	list_display =(
+		'sample_code',
+		'beans_name',
+		'stock_status',
+		'vendor_name',
+		'lot_number',
+		'qc_check',
+		'bag',
+		'inherited_stock','UOM',
+		'initial_stock','UOM',
+		'stock_update','UOM',
+		'beans_usage_amount',
+		'beans_usage_percent',
+		'beans_usage_value',
+		
+		'roasted',
+		'depreciation_average',
 
 
-# 	'tanggal',
-# 	'beans_name',
-# 	'jumlah_diambil',
-# 	'mesin',
-# 	'shifts',
-# 	'pic',
-# 	'keterangan'
-# )
-# 	list_filter =(
+		'last_update'
+		)
+
+	list_filter=(
+		('lot_number',PastDateRangeFilter),
+		'beans_name',
+		'sample_code',
+		# 'stock_status',
+		'vendor_name',
+		('lot_number',PastDateRangeFilter),
+		'qc_check',
+		
+		
+		)
+
+	resource_class = BeansGudangResource
+
+
+
+
+class PengambilanGreenbeanAdmin(ExportActionMixin, admin.ModelAdmin):
+
+	list_display =(
+
+
+	'tanggal',
+	'beans_name',
+	'jumlah_diambil',
+	'UOM',
+	'mesin',
+	'shifts',
+	'pic',
+	'keterangan'
+)
+	list_filter =(
 	
-# 	'tanggal',
-# 	'beans_name',
-# 	'jumlah_diambil',
-# 	'mesin',
-# 	'shifts',
-# 	'pic',
-# 	'keterangan'
-# )
+	'tanggal',
+	'beans_name',
+	'jumlah_diambil',
+	'mesin',
+	'shifts',
+	'pic',
+	'keterangan'
+)
+
+	resource_class = PengambilanGreenbeanResource
+
+	
+	
+
+
 
 class TotalAveragesChangeList(ChangeList):
 
@@ -63,17 +222,7 @@ class TotalAveragesChangeList(ChangeList):
 		len(self.result_list)
 		self.result_list._result_cache.append(total)
 
-class RoasterResource(resources.ModelResource):
-	beans_name = fields.Field(
-        column_name='beans_name',
-        attribute='beans_name',
-        widget=ForeignKeyWidget(BeansGudang, 'biji'))
 
-	class Meta:
-		model = Roaster
-	
-	def get_changelist(self, request, **kwargs):
-		return TotalAveragesChangeList
 
 class RoasterAdmin(ExportActionMixin, admin.ModelAdmin):
 	list_display = ('roast_date',
@@ -82,8 +231,10 @@ class RoasterAdmin(ExportActionMixin, admin.ModelAdmin):
 'shift',
 'batch_number',
 'moisture_content',
-'berat_masuk',
-'berat_akhir',
+'raw',
+'UOM',
+'roasted',
+'UOM',
 'persentase_susut',
 'roaster_pass_check',
 'catatan_roaster',
@@ -96,7 +247,10 @@ class RoasterAdmin(ExportActionMixin, admin.ModelAdmin):
 
 	resource_class = RoasterResource
 
+
+
+admin.site.register(BeansCode, BeansCodeAdmin)
 admin.site.register(BeansGudang, BeansGudangAdmin)
 admin.site.register(Roaster, RoasterAdmin)
-admin.site.register(QCSampleBean, QCSampleBeanAdmin)
-# admin.site.register(PengambilanGreenbean, PengambilanGreenbeanAdmin)
+admin.site.register(PengambilanGreenbean, PengambilanGreenbeanAdmin)
+
