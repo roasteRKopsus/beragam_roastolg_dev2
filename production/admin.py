@@ -289,7 +289,7 @@ class ProductionDivAdmin(ExportActionMixin, admin.ModelAdmin):
 
 	# inlines = [InlineProductioDiv]
 	list_display = (
-		
+		'id',
 		'initial_create',
 		'product_code',
 		'production_date',
@@ -310,16 +310,8 @@ class ProductionDivAdmin(ExportActionMixin, admin.ModelAdmin):
 	)
 
 	readonly_fields = (
-	'initial_create',
-	# 'roast_date',
-	# 'nomor_set',
-	# 'komposisi',
-	# 'mesin', 
-	# 'shift',
-	# 'jenis_blend',
-	# 'blend_code',
-	# 'weight'
-)
+	'id',)
+
 	search_fields = (
 		'tanggal_blend',
 		'jenis_blend'
@@ -346,7 +338,7 @@ class ProductionDivAdmin(ExportActionMixin, admin.ModelAdmin):
 	'pack_status'
 	]
 
-
+	list_display_links = None 
 
 	resource_class = ProductionDivResource
 
