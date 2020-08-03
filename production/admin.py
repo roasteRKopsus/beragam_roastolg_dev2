@@ -28,11 +28,13 @@ class RunTimeStockResource(resources.ModelResource):
 	stock_masuk_qty = fields.Field(attribute='stock_masuk_qty')
 	forecast_vs_real_kg = fields.Field(attribute='forecast_vs_real_kg')
 	forecast_vs_real_pcs = fields.Field(attribute='forecast_vs_real_pcs')
+	forecast_vs_real_percentage = fields.Field(attribute='forecast_vs_real_percentage')
 	stock_keluar_pack = fields.Field(attribute='stock_keluar_pack')
 	stock_keluar_qty = fields.Field(attribute='stock_keluar_qty')
 	stock_update_pack = fields.Field(attribute='stock_update_pack')
+	kg = fields.Field(attribute='kg')
 	stock_update_quantity = fields.Field(attribute='stock_update_quantity')
-
+	pcs = fields.Field(attribute='uom')
 
 class ProductionDivResource(resources.ModelResource):
 	
@@ -45,7 +47,7 @@ class ProductionDivResource(resources.ModelResource):
 	product_code= fields.Field(attribute='product_code')
 	
 	roast_date = fields.Field(attribute='roast_date')
-	nomor_set = fields.Field(attribute='rnomor_set')
+	nomor_set = fields.Field(attribute='nomor_set')
 	
 	komposisi = fields.Field(
 		attribute='komposisi',
