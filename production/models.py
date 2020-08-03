@@ -154,8 +154,8 @@ class RunTimeStock(models.Model):
 		return '{0}\tpcs'.format(value)
 
 	def margin_forecast_to_real_percent(self):
-		forecast = self.stock_forecast_pack + 0.001
-		real = self.stock_masuk_pack + 0.001
+		forecast = float(self.stock_forecast_pack) + 0.001
+		real = float(self.stock_masuk_pack) + 0.001
 		value = round((forecast-real)/forecast*100,2)
 		return '{0}\t%'.format(value)
 
