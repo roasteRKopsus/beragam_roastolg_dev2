@@ -32,9 +32,9 @@ class RunTimeStockResource(resources.ModelResource):
 	stock_keluar_pack = fields.Field(attribute='stock_keluar_pack')
 	stock_keluar_qty = fields.Field(attribute='stock_keluar_qty')
 	stock_update_pack = fields.Field(attribute='stock_update_pack')
+	pcs = fields.Field(attribute='pcs')
+	stock_update_quantity = fields.Field(attribute='stock_update_quantity')	
 	kg = fields.Field(attribute='kg')
-	stock_update_quantity = fields.Field(attribute='stock_update_quantity')
-	pcs = fields.Field(attribute='uom')
 
 class ProductionDivResource(resources.ModelResource):
 	
