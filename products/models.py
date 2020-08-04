@@ -118,7 +118,7 @@ class BeansGudang(models.Model):
 	def stock_availability(self):
 		if self.stock_update == 0.0:
 			return "EMPTY"
-		elif self.stock_update == (float(self.initial_stock)+float(self.inherited_stock))*((float(self.limit_in_percentage)+0.001))/100):
+		elif self.stock_update == (float(self.initial_stock)+float(self.inherited_stock))*((float(self.limit_in_percentage)+0.001)/100):
 			return "LIMIT"
 		elif self.stock_update >= (float(self.initial_stock)+float(self.inherited_stock))*((float(self.limit_in_percentage)+0.001)/100):
 			return "AVAILABLE"
