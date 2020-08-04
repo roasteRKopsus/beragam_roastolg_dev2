@@ -112,7 +112,8 @@ class BeansCodeAdmin(ExportActionMixin, admin.ModelAdmin):
 	'variety',
 	'origin',
 	'paska_panen',
-	'vendor_name'
+	'vendor_name',
+	'stock_terupdate'
 
 		)
 
