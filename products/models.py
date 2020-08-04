@@ -30,7 +30,7 @@ class BeansCode(models.Model):
 		stock_updated = 0
 		for stock in stock_used:
 			stock_updated += stock.stock_update
-		return "{0}\tKg"stock_updated
+		return "{0}\tKg".format(stock_updated)
 
 	stock_terupdate = property(kesimpulan_stock)
 
