@@ -29,7 +29,7 @@ class BeansCode(models.Model):
 		stock_used = BeansGudang.objects.filter(sample_code=self)
 		stock_updated = 0
 		for stock in stock_used:
-			stock_updated += stock_used.stock_update
+			stock_updated += stock.stock_update
 		return stock_updated
 
 	stock_terupdate = property(kesimpulan_stock)
