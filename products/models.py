@@ -25,6 +25,16 @@ class BeansCode(models.Model):
 	paska_panen = models.CharField(max_length=20, default='-')
 	vendor_name = models.CharField(max_length=50)
 
+	def kesimpulan_stock(self):
+		stock_used = BeansGudang.objects.filter(sample_code=self)
+		stock_updated = 0
+		for stock in stock_used:
+			stock_updated += BeansGudang.stock_update
+		return stock_updated
+
+	stock_terupdate = property(kesimpulan_stock)
+
+
 	def __str__(self):
 		return self.code
 
@@ -110,6 +120,8 @@ class BeansGudang(models.Model):
 			return "LIMIT"
 		elif self.stock_update >= (float(self.initial_stock)+float(self.inherited_stock))*((float(self.limit_in_percentage)+0.001)/100):
 			return "AVAILABLE"
+		elif self.stock_update == 0.0:
+			return "EMPTY"
 	
 	def stock_usage_percent(self):
 		update = float(self.stock_update)
