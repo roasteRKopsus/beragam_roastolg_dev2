@@ -32,7 +32,21 @@ class BeansCode(models.Model):
 			stock_updated += stock.stock_update
 		return "{0}\tKg".format(stock_updated)
 
+	def kesimpulan_rupiah(self):
+		stock_used = BeansGudang.objects.filter(sample_code=self)
+		stock_rupiah = 0
+		for stock in stock_used:
+			update = float(stock.stock_update)
+			initial = float(stock.initial_stock)
+			price = float(stock.price_kilo_idr)
+			value = round(((initial-update)*price),2)
+			stock_rupiah+=value
+		return"IDR\t{0}".format(stock_rupiah)
+		
+
+
 	stock_terupdate = property(kesimpulan_stock)
+	nilai_stock = property(kesimpulan_rupiah)
 
 
 	def __str__(self):
