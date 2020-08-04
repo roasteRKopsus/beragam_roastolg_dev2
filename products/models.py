@@ -41,7 +41,7 @@ class BeansCode(models.Model):
 			price = float(stock.price_kilo_idr)
 			value = round(((initial-update)*price),2)
 			stock_rupiah+=value
-		return"IDR\t{0}".format(stock_rupiah)
+		return "IDR\t{:,.2f}".format(stock_rupiah)
 		
 
 
