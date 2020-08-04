@@ -52,6 +52,10 @@ class BeansCode(models.Model):
 	def __str__(self):
 		return self.code
 
+	class Meta:
+		verbose_name = 'GB Overview'
+		verbose_name_plural = 'GB Overview'
+
 
 
 class BeansGudang(models.Model):

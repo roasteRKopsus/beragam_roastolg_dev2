@@ -14,6 +14,20 @@ from django.contrib.admin.views.main import ChangeList
 from django.db.models import Count, Sum
 
 
+
+
+class BeansCodeResource(resources.ModelResource):
+	code = fields.Field(attribute='code')
+	beans_name = fields.Field(attribute='beans_name')
+	jenis_kopi = fields.Field(attribute='jenis_kopi')
+	variety = fields.Field(attribute='variety')
+	origin = fields.Field(attribute='origin')
+	paska_panen = fields.Field(attribute='paska_panen')
+	vendor_name = fields.Field(attribute='vendor_name')
+	stock_terupdate = fields.Field(attribute='stock_terupdate')
+	nilai_stock = fields.Field(attribute='nilai_stock')
+
+
 class RoasterResource(resources.ModelResource):
 	roast_date = fields.Field(attribute='roast_date')
 	beans_name = fields.Field(
@@ -131,6 +145,7 @@ class BeansCodeAdmin(ExportActionMixin, admin.ModelAdmin):
 
 	)
 
+	resource_class = BeansCodeResource
 
 
 class BeansGudangAdmin(ExportActionMixin, admin.ModelAdmin):
