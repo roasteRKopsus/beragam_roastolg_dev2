@@ -37,9 +37,8 @@ class BeansCode(models.Model):
 		stock_rupiah = 0
 		for stock in stock_used:
 			update = float(stock.stock_update)
-			initial = float(stock.initial_stock)
 			price = float(stock.price_kilo_idr)
-			value = round(((initial-update)*price),2)
+			value = round((update*price),2)
 			stock_rupiah+=value
 		return "IDR\t{:,.2f}".format(stock_rupiah)
 		
@@ -136,6 +135,8 @@ class BeansGudang(models.Model):
 	def stock_availability(self):
 		if self.stock_update == 0.0 < 1:
 			return "EMPTY"
+		elif self.stock_update < 0.2:
+			return ""
 		elif self.stock_update < (float(self.initial_stock)+float(self.inherited_stock))*((float(self.limit_in_percentage)+0.001)/100):
 			return "LIMIT"
 		elif self.stock_update > (float(self.initial_stock)+float(self.inherited_stock))*((float(self.limit_in_percentage)+0.001)/100):
@@ -234,7 +235,7 @@ class Roaster(models.Model):
 		return reverse("products:product-detail", kwargs= {'id': self.id})
 
 	def _get_depreciation(self):
-		value = round((self.raw - self.roasted)/self.roasted*100,2)
+		value = round((self.raw - self.roasted)/self.raw*100 ,2)
 		return "{0}\t %".format(value)
 
 	def _get_roastage(self):
