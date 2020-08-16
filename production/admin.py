@@ -279,13 +279,12 @@ class BlendReportAdmin(ExportActionMixin, admin.ModelAdmin):
 	'pack_size',
 	# 'perkiraan_jumlah_pack', #fix this !!!!
 	'catatan_laporan',
-	'agtron_avg'
+	'agtron_avg']
 
-	list_filter = [('production_date', PastDateRangeFilter),
+	list_filter = (('production_date', PastDateRangeFilter),
 	'blend_name',
-	'input_by',]
+	'input_by',)
 
-	]
 	inlines = [
 		ProductionDivInline
 	]
