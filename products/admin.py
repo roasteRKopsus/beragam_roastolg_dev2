@@ -12,8 +12,8 @@ from import_export import fields, resources
 from import_export.widgets import ForeignKeyWidget
 from django.contrib.admin.views.main import ChangeList
 from django.db.models import Count, Sum
-
-
+from datetime import date
+today = datetime.date.today()
 
 
 class BeansCodeResource(resources.ModelResource):
@@ -221,41 +221,25 @@ class PengambilanGreenbeanAdmin(ExportActionMixin, admin.ModelAdmin):
 
 
 
-class TotalAveragesChangeList(ChangeList):
-
-	fields_to_total = ['berat_akhir', 'berat_masuk']
-
-	def get_total_values(self, queryset):
-
-		total =  Roaster()
-		total.custom_alias_name = "Totals" 
-		for field in self.fields_to_total:
-			setattr(total, field, queryset.aggregate(Sum(field)).items()[0][1])
-		return total
-
-	def get_results(self, request):
-		super(TotalAveragesChangeList, self).get_results(request)
-		total = self.get_total_values(self.query_set)
-		len(self.result_list)
-		self.result_list._result_cache.append(total)
 
 
+	
 
 class RoasterAdmin(ExportActionMixin, admin.ModelAdmin):
 	list_display = ('roast_date',
-'beans_name',
-'mesin',
-'shift',
-'batch_number',
-'moisture_content',
-'raw',
-'UOM',
-'roasted',
-'UOM',
-'persentase_susut',
-'roaster_pass_check',
-'catatan_roaster',
-'umur_roastbean')
+	'beans_name',
+	'mesin',
+	'shift',
+	'batch_number',
+	'moisture_content',
+	'raw',
+	'UOM',
+	'roasted',
+	'UOM',
+	'persentase_susut',
+	'roaster_pass_check',
+	'catatan_roaster',
+	'umur_roastbean')
 
 
 	
@@ -263,6 +247,26 @@ class RoasterAdmin(ExportActionMixin, admin.ModelAdmin):
 	# prepopulated_fields = {'susut':('persentase_susut')}
 
 	resource_class = RoasterResource
+
+	
+
+	def changelist_view(self, request, extra_context=None):
+
+		roasted_daily = []
+
+	
+
+		qs = Roaster.objects.filter(roast_date = today)
+
+		froco15 = qs.filter(mesin= 'froco-15').aggregate(Sum('roasted'))
+		froco25 = qs.filter(mesin= 'froco-25').aggregate(Sum('roasted'))
+		context = {
+		'froco15' : froco15,
+		'froco25' : froco25,
+		}
+
+		return super().changelist_view(request, extra_context=context)
+
 
 
 

@@ -18,7 +18,7 @@ from django.contrib import admin
 
 from django.urls import include, path
 from pages.views import base_view
-from production.views import ChartData
+from production.views import *
 from rest_framework.urlpatterns import format_suffix_patterns
 
 admin.site.site_header = 'BERAGAM ROASTLOG'
@@ -34,7 +34,9 @@ urlpatterns = [
     path('products/', include('products.urls')),
     path('production/', include('production.urls')),
     path('test', base_view, name='base'),
-    path('api/chart/data/', ChartData.as_view())
+    path('api/chart/data/', ChartData.as_view()),
+    path('api/blendreport/data', BlendReportData.as_view()),
+
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

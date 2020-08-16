@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.shortcuts import render
 from .models import *
 from django.contrib.admin import DateFieldListFilter
 from import_export.admin import ImportExportModelAdmin
@@ -6,9 +7,13 @@ from import_export.admin import ExportActionMixin
 from daterangefilter.filters import PastDateRangeFilter
 from django.contrib.auth import get_permission_codename
 from django.forms.models import BaseInlineFormSet, ModelForm
-
+from django.core.serializers.json import DjangoJSONEncoder
+from django.forms.models import model_to_dict
 from import_export import fields, resources
 from import_export.widgets import ForeignKeyWidget
+from django.db.models import Count
+import json
+
 
 
 class RunTimeStockResource(resources.ModelResource):
@@ -71,6 +76,7 @@ class ProductionDivResource(resources.ModelResource):
 	qc_check_pass = fields.Field(attribute='qc_check_pass')
 	taste_notes = fields.Field(attribute='taste_notes')
 	pack_status = fields.Field(attribute='pack_status')
+	umur_blend = fields.Field(attribute='umur_blend')
 
 
 class BlendReportResource(resources.ModelResource):
@@ -271,9 +277,13 @@ class BlendReportAdmin(ExportActionMixin, admin.ModelAdmin):
 	'blend_recorded',
 	'total_weight','uom',
 	'pack_size',
-	'perkiraan_jumlah_pack',
+	# 'perkiraan_jumlah_pack', #fix this !!!!
 	'catatan_laporan',
 	'agtron_avg'
+
+	list_filter = [('production_date', PastDateRangeFilter),
+	'blend_name',
+	'input_by',]
 
 	]
 	inlines = [
@@ -282,6 +292,12 @@ class BlendReportAdmin(ExportActionMixin, admin.ModelAdmin):
 
 
 	resource_class = BlendReportResource
+
+	# def changelist_view(self, request, extra_content=None):
+	
+	# 	chart_data = []
+	# 	return super().changelist_view(request, extra_context=extra_context)
+
 
 
 class ProductionDivAdmin(ExportActionMixin, admin.ModelAdmin):
@@ -343,6 +359,21 @@ class ProductionDivAdmin(ExportActionMixin, admin.ModelAdmin):
 	list_display_links = None 
 
 	resource_class = ProductionDivResource
+
+	def changelist_view(self, request, extra_context=None):
+		cup_task = ProductionDiv.objects.filter(cupping=False).count()
+		karantina_produksi = ProductionDiv.objects.filter(production_check_pass=False).count()
+		karantina_qc = ProductionDiv.objects.filter(qc_check_pass=False).count()
+		unpack_status = ProductionDiv.objects.filter(pack_status=False).count()
+
+		context = {
+		'cup_task': cup_task,
+		'karantina_produksi' : karantina_produksi,
+		'karantina_qc' : karantina_qc,
+		"unpack_status" : unpack_status
+		}
+
+		return super().changelist_view(request, extra_context=context)
 
 
 class ProductionSampleBlendAdmin(ExportActionMixin, admin.ModelAdmin):

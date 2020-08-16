@@ -1,0 +1,20 @@
+{% extends "admin/change_list.html" %}
+{% load static %}
+
+
+
+<!-- Render the rest of the ChangeList view by calling block.super -->
+
+{% block content %}
+<h1> <u> Daily Roasted Result </u> </h1>
+<h2> Froco 15 : {{ froco15 }} </h1>
+<h2> Froco 25 : {{ froco25 }} </h1>
+
+
+{{ block.super }}
+
+
+
+{% endblock %}
+
+

@@ -1,0 +1,18 @@
+{% extends "admin/change_list.html" %}
+{% load static %}
+
+
+
+<!-- Render the rest of the ChangeList view by calling block.super -->
+
+{% block content %}
+
+<h2> Coffee Need On Cup : {{ cup_task }}</h2>
+<h2> Need To Pack : {{ unpack_status }} </h2>
+<h2> Karantina Produksi : {{ karantina_produksi }}</h2>
+<h2> Karantina QC : {{ karantina_qc }}</h2>
+
+
+{{ block.super }}
+
+{% endblock %}

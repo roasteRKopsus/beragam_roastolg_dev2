@@ -14,6 +14,7 @@ urlpatterns = [
     path('<int:id>/delete/', production_delete_view, name='production-delete'),
     path('statistik', production_karantina_chart, name='charts-produksi-karantina'),
     path('compilestat', StatsView.as_view(), name='stats'),
+    path('blendreport-api', StatsView.as_view(), name='stats'),
     
     # path('compilestat', agtron_stat, name='agtron-stat'),
 ]

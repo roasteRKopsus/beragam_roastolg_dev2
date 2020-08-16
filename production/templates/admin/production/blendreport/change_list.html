@@ -1,0 +1,56 @@
+{% extends "admin/change_list.html" %}
+{% load static %}
+{% block extrahead %}
+
+
+
+<!-- Render the rest of the ChangeList view by calling block.super -->
+{{ block.super }}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+<script>
+{% block jquery %}
+
+var endpoint = '/api/blendreport/data'
+var nama_blend = []
+var production_date = []
+var weight = []
+	$.ajax({
+	  method: "GET",
+	  url: endpoint,
+	  success: function(data){
+	  	var ctx = document.getElementById("myChart")
+	  	var myChart = new Chart(ctx, {
+    		type: 'line',
+    		data: {
+        		labels: nama_blend,
+        		datasets: [{
+            		label: nama_blend,
+            		data: weight,
+            	}]
+            }
+        })
+  	},
+	  	
+	   
+
+	  error: function(error_data){
+	    console.log(error_data)
+	  }
+  })
+
+{% endblock %}
+</script>
+{% endblock %}
+
+{% block content %}
+<!-- Render our chart -->
+<div style="width: 80%;">
+  <canvas style="margin-bottom: 30px; width: 60%; height: 50%;" id="myChart"></canvas>
+</div>
+<!-- Render the rest of the ChangeList view -->
+{{ block.super }}
+
+{% endblock %}

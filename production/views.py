@@ -11,7 +11,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.views.generic import View
 from rest_framework.renderers import TemplateHTMLRenderer
-from .serializers import ProductionDivSerializer
+from rest_framework import viewsets
+from .serializers import *
 
 
 class StatsView(View):
@@ -214,24 +215,15 @@ class ChartData(APIView):
             agtronval.append(query)
 
         queryset_blend =ProductionDiv.objects.values('jenis_blend')
-      
-        
-
-        labels = ['lolos_karantina', 'karantina_qc', 'karantina_prod', 'karantina qc&produksi']
-        lolos_karantina = [queryset+queryset_qc]
-        karantina = [queryset2,queryset_qc2,queryset2+queryset_qc2, queryset+queryset_qc]
-        # serialize = ProductionDivSerializer(productiondiv, many=True)
-        data = {
-    		"labels" : labels,
-    		"pass-check" : lolos_karantina,
-    		"karantina":karantina,
-    		# "queryset_agtron":queryset_agtron,
-    		"queryset_blend":queryset_blend,
-    		# "blendval":blendval,
-    		"agtronval":agtronval
-    		
-    	}
         return Response(data)
 
     def post(self, request):
         pass
+
+class BlendReportData(APIView):
+
+    def get(self, request):
+        queryset = BlendReport.objects.all()
+        serializer = BlendReportSerializer(queryset, many=True)
+        return Response(serializer.data)
+

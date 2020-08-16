@@ -71,7 +71,7 @@ class BeansGudang(models.Model):
 	bag = models.PositiveIntegerField()
 	qty_bag = models.PositiveIntegerField()
 	limit_in_percentage = models.DecimalField(max_digits=4, decimal_places=2,default=0)
-	inherited_stock = models.DecimalField(max_digits=5, decimal_places=2, default=0.1)
+	inherited_stock = models.DecimalField(max_digits=5, decimal_places=3, default=0.001)
 	initial_stock=models.DecimalField(max_digits=10, decimal_places=2, default=1)
 
 	price_kilo_idr = models.DecimalField(max_digits=10, decimal_places=2, default=1)
@@ -198,7 +198,6 @@ class BeansGudang(models.Model):
 
 	def __str__(self):
 		return self.beans_name
-
 
 	class Meta:
 		verbose_name = 'Bahan Baku'

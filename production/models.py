@@ -206,7 +206,7 @@ class BlendReport(models.Model):
 	def packed_form_forcast(self):
 		pack_vol = self.pack_size.pack_volume
 		pack_forecast = self.total_weight*1000/pack_vol
-		return pack_forecast
+		return round(pack_forecast,2)
 
 	def agtron_average(self):
 		agtron_val = ProductionDiv.objects.filter(production_date=self)
@@ -225,6 +225,9 @@ class BlendReport(models.Model):
 	perkiraan_jumlah_pack = property(packed_form_forcast)
 	blend_id = property(blend_code)
 	agtron_avg = property(agtron_average)
+
+
+
 
 
 
@@ -322,7 +325,6 @@ class ProductionDiv(models.Model):
 			return "this  item need resolution soon"
 		elif self. production_check_pass ==False:
 			return "this item need resolution soon"
-
 		else:
 			return "this item still waiting to be done"
 	# def lead_time (self):
