@@ -418,7 +418,69 @@ class QCSampleBlendAdmin(ExportActionMixin, admin.ModelAdmin):
 
 
 		)
+class DisposalItemInline(admin.StackedInline):
+	model = DisposalItem
+	extra=0
 
+class DisposalReportAdmin(ExportActionMixin, admin.ModelAdmin):
+	readonly_fields = ['id',]
+	list_display=(
+		'id',
+		'tanggal_BAP',
+		'author',
+		'weight',
+		'kg',
+		'value',
+		'unit',
+		'note',
+		'hard_copy_url',
+		'diketahui_oleh'
+
+		)
+
+	list_filter =(
+		('tanggal_BAP', PastDateRangeFilter),
+		'author',)
+
+	inlines = [
+		DisposalItemInline
+	]
+
+
+class DisposalItemAdmin(ExportActionMixin, admin.ModelAdmin):
+	list_display=(
+			'report_id',
+			# 'created', 
+			'production_date',
+			'material_name',
+			'weight',
+			'kg',
+			'value_per_kg',
+			'idr',
+			'total_value',
+			'idr',
+			'note'
+		)
+
+	list_filter =(
+		('production_date',PastDateRangeFilter),
+		'material_name'
+		)
+
+class KejadianAdmin(ExportActionMixin, admin.ModelAdmin):
+	list_display = (
+		'tanggal',
+		'reporter',
+		'kronologi',
+		'resolusi' 
+)
+
+	list_filter = (
+	('tanggal', PastDateRangeFilter),
+	'reporter',
+	'kronologi',
+	'resolusi' 
+)
 
 
 
@@ -433,3 +495,6 @@ admin.site.register(RunTimeStock, RunTimeStockAdmin)
 admin.site.register(PackFormInput, PackFormInputAdmin)
 admin.site.register(BarangKeluar, BarangKeluarAdmin)
 admin.site.register(DaftarCustomer, DaftarCustomerAdmin)
+admin.site.register(DisposalReport, DisposalReportAdmin)
+admin.site.register(DisposalItem, DisposalItemAdmin)
+admin.site.register(Kejadian, KejadianAdmin)

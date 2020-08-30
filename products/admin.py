@@ -205,8 +205,8 @@ class PengambilanGreenbeanAdmin(ExportActionMixin, admin.ModelAdmin):
 )
 	list_filter =(
 	
-	'tanggal',
-	'beans_name',
+	('tanggal',PastDateRangeFilter),
+	('beans_name', RelatedDropdownFilter),
 	'jumlah_diambil',
 	'mesin',
 	'shifts',
@@ -256,10 +256,10 @@ class RoasterAdmin(ExportActionMixin, admin.ModelAdmin):
 
 	
 
-		qs = Roaster.objects.filter(roast_date = today)
+		qs = Roaster.objects.all()
 
-		froco15 = qs.filter(mesin= 'froco-15').aggregate(Sum('roasted'))
-		froco25 = qs.filter(mesin= 'froco-25').aggregate(Sum('roasted'))
+		froco15 = qs.filter(roast_date = today).filter(mesin= 'froco-15').aggregate(Sum('roasted'))
+		froco25 = qs.filter(roast_date = today).filter(mesin= 'froco-25').aggregate(Sum('roasted'))
 		context = {
 		'froco15' : froco15,
 		'froco25' : froco25,

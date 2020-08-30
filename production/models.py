@@ -374,3 +374,63 @@ class QCSampleBlend(models.Model):
 	catatan = models.CharField(max_length=150, default='-')
 	
 	qc_acceptance =models.BooleanField(default=False)
+
+class DisposalReport(models.Model):
+	unit = 'IDR'
+	kg = 'Kg'
+	tanggal_BAP= models.DateField()
+	author = models.CharField(max_length=20)
+	diketahui_oleh = models.CharField(max_length=30)
+	hard_copy_url = models.URLField(default='')
+	note = models.TextField(max_length=300)
+
+	def kg_loss(self):
+		total_kg = DisposalItem.objects.filter(report_id=self)
+		kg_total = 0
+		for kg in total_kg:
+			kg_total += kg.weight
+		return "\t{:,.0f}".format(kg_total)
+
+
+	def value_loss(self):
+		total_value = DisposalItem.objects.filter(report_id=self)
+		value = 0
+		for val in total_value:
+			sum_val = val.weight * val.value_per_kg
+			value += sum_val
+		return "\t{:,.0f}".format(value)
+
+	weight = property(kg_loss)		
+	value = property(value_loss)
+
+class DisposalItem(models.Model):
+	idr = 'IDR'
+	kg = 'Kg'
+	report_id = models.ForeignKey(DisposalReport, on_delete=models.PROTECT)
+	# created = models.DateField(default=DisposalReport.tanggal_BAP, editable=False)
+	production_date = models.DateField()
+	material_name = models.CharField(max_length=50)
+	weight = models.DecimalField(max_digits=6, decimal_places=2)
+	value_per_kg = models.PositiveIntegerField(max_length=9, default=0)
+	
+	note = models.TextField(max_length=300)
+
+	def item_val_loss(self):
+		value = self.weight * self.value_per_kg
+		return "\t{:,.0f}".format(value)
+
+
+
+	total_value= property(item_val_loss)
+
+class Kejadian(models.Model):
+	tanggal = models.DateTimeField()
+	reporter = models.CharField(max_length=15, default='-')
+	kronologi = models.TextField(max_length=300)
+	resolusi = models.TextField(max_length=300)
+
+
+	class Meta:
+		verbose_name = 'Kejadian'
+		verbose_name_plural = 'Kejadian'
+	
