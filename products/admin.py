@@ -41,7 +41,7 @@ class RoasterResource(resources.ModelResource):
 	batch_number= fields.Field(attribute='batch_number')
 	beans_color = fields.Field(attribute='beans_color')
 	density = fields.Field(attribute='density')
-	moisture = fields.Field(attribute='moisture')
+	moisture = fields.Field(attribute='moisture_content')
 	raw = fields.Field(attribute='raw')
 	roasted = fields.Field(attribute='roasted')
 	persentase_susut = fields.Field(attribute='persentase_susut')
