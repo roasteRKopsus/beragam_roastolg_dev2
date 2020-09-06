@@ -267,6 +267,25 @@ class RoasterAdmin(ExportActionMixin, admin.ModelAdmin):
 
 		return super().changelist_view(request, extra_context=context)
 
+class BlendNameAdmin(ExportActionMixin, admin.ModelAdmin):
+	list_display = ('blend_name')
+	list_filter = ('blend_name')
+
+class RoasterNameAdmin(ExportActionMixin, admin.ModelAdmin):
+	list_display = ('roaster_technician',
+		'created_date', 
+		'telp',
+		'address'
+		)
+
+class ProfileRoastAdmin(ExportActionMixin, admin.ModelAdmin):
+	list_display = ('created_date',
+		'profile_name',
+		'mesin',
+		'beans_name',
+		'weight_lose_min',
+		'weight_lose_max')
+	list_filter = ('profile_name', 'beans_name')
 
 
 
@@ -274,4 +293,7 @@ admin.site.register(BeansCode, BeansCodeAdmin)
 admin.site.register(BeansGudang, BeansGudangAdmin)
 admin.site.register(Roaster, RoasterAdmin)
 admin.site.register(PengambilanGreenbean, PengambilanGreenbeanAdmin)
+admin.site.register(BlendName, BlendNameAdmin)
+admin.site.register(RoasterName, RoasterNameAdmin)
+admin.site.register(ProfileRoast, ProfileRoastAdmin)
 
