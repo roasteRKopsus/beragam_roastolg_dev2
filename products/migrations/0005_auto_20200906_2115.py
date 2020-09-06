@@ -15,12 +15,12 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='roaster',
             name='blend_name',
-            field=models.ForeignKey(default=products.models.BlendName.get_blendname, on_delete=django.db.models.deletion.PROTECT, to='products.BlendName'),
+            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.PROTECT, to='products.BlendName'),
         ),
         migrations.AddField(
             model_name='roaster',
             name='profile_name',
-            field=models.ForeignKey(default=products.models.ProfileRoast.get_profileroast, on_delete=django.db.models.deletion.PROTECT, to='products.ProfileRoast'),
+            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.PROTECT, to='products.ProfileRoast'),
         ),
         migrations.AddField(
             model_name='roaster',
@@ -30,11 +30,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='roaster',
             name='roaster',
-            field=models.ForeignKey(default=products.models.RoasterName.get_roastername, on_delete=django.db.models.deletion.PROTECT, to='products.RoasterName'),
+            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.PROTECT, to='products.RoasterName'),
         ),
         migrations.AddField(
             model_name='roasterrorlogs',
             name='roaster',
-            field=models.ForeignKey(default=products.models.RoasterName.get_roastername, on_delete=django.db.models.deletion.PROTECT, to='products.RoasterName'),
+            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.PROTECT, to='products.RoasterName'),
         ),
     ]
