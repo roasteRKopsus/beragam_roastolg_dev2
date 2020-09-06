@@ -288,6 +288,16 @@ class ProfileRoastAdmin(ExportActionMixin, admin.ModelAdmin):
 	list_filter = ('profile_name', 'beans_name')
 
 
+class RoastErrorLogsAdmin(ExportActionMixin, admin.ModelAdmin):
+	list_display = ('date_time', 
+		'roastcode',
+		'machine',
+		'kronology',
+		'resolution')
+	list_filter = (('date_time', PastDateRangeFilter), 'machine')
+
+
+
 
 admin.site.register(BeansCode, BeansCodeAdmin)
 admin.site.register(BeansGudang, BeansGudangAdmin)
@@ -296,4 +306,5 @@ admin.site.register(PengambilanGreenbean, PengambilanGreenbeanAdmin)
 admin.site.register(BlendName, BlendNameAdmin)
 admin.site.register(RoasterName, RoasterNameAdmin)
 admin.site.register(ProfileRoast, ProfileRoastAdmin)
+admin.site.register(RoastErrorLogs, RoastErrorLogsAdmin)
 
