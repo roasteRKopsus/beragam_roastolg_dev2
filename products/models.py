@@ -237,6 +237,9 @@ class ProfileRoast(models.Model):
 	def get_profileroast():
 		return RoasterName.objects.get_or_create(id=1)
 
+	def __str__(self):
+		return self.profile_name
+
 	
 
 class Roaster(models.Model):
