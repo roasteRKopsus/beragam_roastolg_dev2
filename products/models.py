@@ -202,6 +202,41 @@ class BeansGudang(models.Model):
 	class Meta:
 		verbose_name = 'Bahan Baku'
 		verbose_name_plural = 'Bahan Baku'
+
+
+class BlendName(models.Model):
+	blend_name = models.CharField(max_length=50, default=0)
+
+	def get_blendname():
+		return BlendName.objects.get_or_create(id=1)
+
+	def __str__(self):
+		return self.blend_name
+
+class RoasterName(models.Model):
+	roaster_technician = models.CharField(max_length=20)
+	created_date = models.DateField()
+	telp = models.PositiveIntegerField()
+	address = models.CharField(max_length=50)
+
+	def __str__(self):
+		return self.roaster_technician
+
+	def get_roastername():
+		return RoasterName.objects.get_or_create(id=1)
+
+class ProfileRoast(models.Model):
+	mesin = (('froco-15', 'froco-15'), ('froco-25', 'froco-25'))
+	created_date = models.DateField()
+	profile_name = models.CharField(max_length=20)
+	mesin = models.CharField(max_length=50, choices=mesin, default='-')
+	beans_name = models.ForeignKey(BeansGudang, on_delete=models.CASCADE)
+	weight_lose_min = models.DecimalField(max_digits=5,decimal_places=2, help_text='in percent')
+	weight_lose_max = models.DecimalField(max_digits=5,decimal_places=2, help_text='in percent')
+
+	def get_profileroast():
+		return RoasterName.objects.get_or_create(id=1)
+
 	
 
 class Roaster(models.Model):
@@ -214,6 +249,9 @@ class Roaster(models.Model):
 	masuk= (('Pagi','Pagi'),('Siang', 'Siang'))
 	roast_date = models.DateField(auto_now_add=True)
 	beans_name = models.ForeignKey(BeansGudang, on_delete=models.CASCADE)
+	# blend_name = models.ForeignKey(BlendName, on_delete=models.PROTECTED, default=get_blendname)
+	# profile_name = models.ForeignKey(ProfileRoast, on_delete=models.PROTECTED, default=get_profileroast)
+	# roaster =  models.ForeignKey(RoasterName, on_delete=models.PROTECTED, default=get_roastername)
 
 	mesin = models.CharField(max_length=50, choices=machine, default='')
 	shift = models.CharField(max_length=60, choices=masuk, default='')
@@ -266,6 +304,16 @@ class PengambilanGreenbean(models.Model):
 	# 	obj.beans_name.stock_update - obj.jumlah_diambil
 	# 	obj.beans_name.save()
 	# 	super().save_model(request, obj, form, change)
+
+class RoastErrorLogs(models.Model):
+	mesin = (('froco-15', 'froco-15'), ('froco-25', 'froco-25'))
+	date_time = models.DateTimeField()
+	# roaster = models.ForeignKey(RoasterName, on_delete=models.PROTECTED, default=get_roastername)
+	roastcode = models.CharField(max_length=10, default='-')
+	machine = models.CharField(max_length=50, choices=mesin, default='')
+	kronology = models.TextField(max_length=140, default= '-')
+	resolution = models.TextField(max_length=140, default='-')
+
 
 
 		

@@ -38,26 +38,6 @@ class Migration(migrations.Migration):
                 'verbose_name_plural': 'Kejadian',
             },
         ),
-        migrations.AlterField(
-            model_name='barangkeluar',
-            name='tanggal_dan_jam',
-            field=models.DateTimeField(default=datetime.datetime(2020, 8, 30, 4, 56, 49, 603005, tzinfo=utc)),
-        ),
-        migrations.AlterField(
-            model_name='komposisibean',
-            name='tanggal_pembuatan_komposisi',
-            field=models.DateField(default=datetime.date(2020, 8, 30)),
-        ),
-        migrations.AlterField(
-            model_name='packforminput',
-            name='tanggal_dan_jam',
-            field=models.DateTimeField(default=datetime.datetime(2020, 8, 30, 4, 56, 49, 603005, tzinfo=utc)),
-        ),
-        migrations.AlterField(
-            model_name='productiondiv',
-            name='roast_date',
-            field=models.DateField(default=datetime.date(2020, 8, 30)),
-        ),
         migrations.CreateModel(
             name='DisposalItem',
             fields=[
