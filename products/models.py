@@ -250,9 +250,9 @@ class Roaster(models.Model):
 	roast_date = models.DateField(auto_now_add=True)
 	beans_name = models.ForeignKey(BeansGudang, on_delete=models.CASCADE)
 	roastcode = models.CharField(max_length=20, default='-')
-	blend_name = models.ForeignKey(BlendName, on_delete=models.PROTECT, default=BlendName.get_blendname)
-	profile_name = models.ForeignKey(ProfileRoast, on_delete=models.PROTECT, default=ProfileRoast.get_profileroast)
-	roaster =  models.ForeignKey(RoasterName, on_delete=models.PROTECT, default=RoasterName.get_roastername)
+	blend_name = models.ForeignKey(BlendName, on_delete=models.PROTECT, default=1)
+	profile_name = models.ForeignKey(ProfileRoast, on_delete=models.PROTECT, default=1)
+	roaster =  models.ForeignKey(RoasterName, on_delete=models.PROTECT, default=1)
 
 	mesin = models.CharField(max_length=50, choices=machine, default='')
 	shift = models.CharField(max_length=60, choices=masuk, default='')
@@ -309,7 +309,7 @@ class PengambilanGreenbean(models.Model):
 class RoastErrorLogs(models.Model):
 	mesin = (('froco-15', 'froco-15'), ('froco-25', 'froco-25'))
 	date_time = models.DateTimeField()
-	roaster = models.ForeignKey(RoasterName, on_delete=models.PROTECT, default=RoasterName.get_roastername)
+	roaster = models.ForeignKey(RoasterName, on_delete=models.PROTECT, default=1)
 	roastcode = models.CharField(max_length=10, default='-')
 	machine = models.CharField(max_length=50, choices=mesin, default='')
 	kronology = models.TextField(max_length=140, default= '-')

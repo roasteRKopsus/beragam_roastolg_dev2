@@ -228,9 +228,13 @@ class PengambilanGreenbeanAdmin(ExportActionMixin, admin.ModelAdmin):
 class RoasterAdmin(ExportActionMixin, admin.ModelAdmin):
 	list_display = ('roast_date',
 	'beans_name',
+	'blend_name',
 	'mesin',
+	'profile_name',
 	'shift',
+	'roaster',
 	'batch_number',
+	'roastcode',
 	'moisture_content',
 	'raw',
 	'UOM',
