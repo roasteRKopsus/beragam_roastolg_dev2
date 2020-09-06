@@ -268,8 +268,8 @@ class RoasterAdmin(ExportActionMixin, admin.ModelAdmin):
 		return super().changelist_view(request, extra_context=context)
 
 class BlendNameAdmin(ExportActionMixin, admin.ModelAdmin):
-	list_display = ('blend_name')
-	list_filter = ('blend_name')
+	list_display = ('blend_name',)
+	list_filter = ('blend_name', )
 
 class RoasterNameAdmin(ExportActionMixin, admin.ModelAdmin):
 	list_display = ('roaster_technician',
