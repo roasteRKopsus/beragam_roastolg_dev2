@@ -275,7 +275,7 @@ class Roaster(models.Model):
 		min_loss = float(self.profile_name.weight_lose_min)
 		max_loss = float(self.profile_name.weight_lose_max)
 		safe_loss = []
-		for i in np.arange(min_loss, max_loss, 0.01):
+		for i in np.linspace(min_loss, max_loss, 0.01):
 			safe_loss.append(i)
 		return weight_end in safe_loss
 
