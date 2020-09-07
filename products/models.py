@@ -5,6 +5,8 @@ from django.utils import timezone
 import datetime
 from django.db.models import Sum
 from django.db.models.signals import post_save
+import numpy as np
+
 
 date = datetime.date.today()
 datetimex = datetime.datetime.now()
@@ -282,12 +284,26 @@ class Roaster(models.Model):
 	def _get_roastage(self):
 		return(date-self.roast_date)
 
+	def auto_weight_check(self):
+		weight_end = float(self.roasted)
+		min_loss = float(self.profile_name.weight_lose_min)
+		max_loss = float(self.profile_name.weight_lose_max)
+		safe_loss = np.arange(min_loss, max_loss)
+		print(safe_loss)
+
+		if weight_end == safe_loss:
+			return True
+		elif weight_end != safe_loss:
+			return False
+	auto_weight_check.boolean=True
+
 	# def __str__(self):
 	# 	return self.beans_name
 
 	persentase_susut = property (_get_depreciation)
 
 	umur_roastbean = property(_get_roastage)
+	auto_control_weight = property(auto_weight_check)
 
 
 
