@@ -18,7 +18,7 @@ today = datetime.date.today()
 
 class BeansCodeResource(resources.ModelResource):
 
-	
+
 	code = fields.Field(attribute='code')
 	beans_name = fields.Field(attribute='beans_name')
 	jenis_kopi = fields.Field(attribute='jenis_kopi')
@@ -96,9 +96,6 @@ class BeansGudangResource(resources.ModelResource):
 	beans_usage_percent = fields.Field(attribute='beans_usage_percent')
 	depreciation_average = fields.Field(attribute='depreciation_average')
 	roasted = fields.Field(attribute='roasted')
-	
-	
-
 	qc_acceptance = fields.Field(attribute='qc_acceptance')
 	moisture_check = fields.Field(attribute='moisture_check')
 	primary_defect = fields.Field(attribute='primary_defect')
