@@ -275,9 +275,10 @@ class Roaster(models.Model):
 		min_loss = float(self.profile_name.weight_lose_min)
 		max_loss = float(self.profile_name.weight_lose_max)
 		safe_loss = []
-		for i in np.linspace(min_loss, max_loss, 1):
-			safe_loss.append(i)
-		return weight_end in safe_loss
+		if weight_end >= min_loss or <= max_loss:
+			return True
+		else :
+			return False
 
 
 	auto_weight_check.boolean=True

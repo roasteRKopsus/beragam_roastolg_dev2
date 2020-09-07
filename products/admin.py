@@ -245,11 +245,11 @@ class RoasterAdmin(ExportActionMixin, admin.ModelAdmin):
 	'UOM',
 	'persentase_susut',
 	'roaster_pass_check',
-	'auto_control_weight',
+	'auto_weight_check',
 	'catatan_roaster',
 	'umur_roastbean')
 
-	list_filter=(('roast_date', PastDateRangeFilter),'mesin','shift','roaster_pass_check', ('beans_name', RelatedDropdownFilter))
+	list_filter=(('roast_date', PastDateRangeFilter),'mesin','shift','roaster_pass_check','blend_name', ('beans_name', RelatedDropdownFilter))
 	# prepopulated_fields = {'susut':('persentase_susut')}
 
 	resource_class = RoasterResource
