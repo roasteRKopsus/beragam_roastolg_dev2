@@ -17,6 +17,8 @@ today = datetime.date.today()
 
 
 class BeansCodeResource(resources.ModelResource):
+
+	
 	code = fields.Field(attribute='code')
 	beans_name = fields.Field(attribute='beans_name')
 	jenis_kopi = fields.Field(attribute='jenis_kopi')
@@ -29,6 +31,8 @@ class BeansCodeResource(resources.ModelResource):
 
 
 class RoasterResource(resources.ModelResource):
+
+
 	roast_date = fields.Field(attribute='roast_date')
 	beans_name = fields.Field(
 		attribute='beans_name',
@@ -50,7 +54,10 @@ class RoasterResource(resources.ModelResource):
 	umur_roastbean = fields.Field(attribute='umur_roastbean')
 
 
+
 class PengambilanGreenbeanResource(resources.ModelResource):
+
+
 	beans_name = fields.Field(
         column_name='beans_name',
         attribute='beans_name',
@@ -59,7 +66,10 @@ class PengambilanGreenbeanResource(resources.ModelResource):
 	class Meta:
 		model = PengambilanGreenbean
 
+
 class BeansGudangResource(resources.ModelResource):
+
+
 	last_update = fields.Field(attribute='last_update')
 	sample_code = fields.Field(
 		attribute='sample_code',
@@ -117,6 +127,8 @@ class BeansGudangResource(resources.ModelResource):
 
 
 class BeansCodeAdmin(ExportActionMixin, admin.ModelAdmin):
+
+
 	list_display= (
 
 
@@ -149,6 +161,8 @@ class BeansCodeAdmin(ExportActionMixin, admin.ModelAdmin):
 
 
 class BeansGudangAdmin(ExportActionMixin, admin.ModelAdmin):
+
+
 	list_display = (
 
 		'sample_code',
@@ -187,13 +201,10 @@ class BeansGudangAdmin(ExportActionMixin, admin.ModelAdmin):
 	resource_class = BeansGudangResource
 
 
-
-
 class PengambilanGreenbeanAdmin(ExportActionMixin, admin.ModelAdmin):
 
+
 	list_display =(
-
-
 	'tanggal',
 	'beans_name',
 	'jumlah_diambil',
@@ -215,17 +226,12 @@ class PengambilanGreenbeanAdmin(ExportActionMixin, admin.ModelAdmin):
 )
 
 	resource_class = PengambilanGreenbeanResource
-
-	
-	
-
-
-
-
-
 	
 
 class RoasterAdmin(ExportActionMixin, admin.ModelAdmin):
+
+
+
 	list_display = ('roast_date',
 	'beans_name',
 	'blend_name',
@@ -246,37 +252,35 @@ class RoasterAdmin(ExportActionMixin, admin.ModelAdmin):
 	'catatan_roaster',
 	'umur_roastbean')
 
-
-	
 	list_filter=(('roast_date', PastDateRangeFilter),'mesin','shift','roaster_pass_check', ('beans_name', RelatedDropdownFilter))
 	# prepopulated_fields = {'susut':('persentase_susut')}
 
 	resource_class = RoasterResource
 
-	
 
 	def changelist_view(self, request, extra_context=None):
 
 		roasted_daily = []
-
-	
-
 		qs = Roaster.objects.all()
-
 		froco15 = qs.filter(roast_date = today).filter(mesin= 'froco-15').aggregate(Sum('roasted'))
 		froco25 = qs.filter(roast_date = today).filter(mesin= 'froco-25').aggregate(Sum('roasted'))
 		context = {
 		'froco15' : froco15,
 		'froco25' : froco25,
 		}
-
 		return super().changelist_view(request, extra_context=context)
 
+
 class BlendNameAdmin(ExportActionMixin, admin.ModelAdmin):
+
+
 	list_display = ('blend_name',)
 	list_filter = ('blend_name', )
 
+
 class RoasterNameAdmin(ExportActionMixin, admin.ModelAdmin):
+
+
 	list_display = ('roaster_technician',
 		'created_date', 
 		'telp',
@@ -284,6 +288,9 @@ class RoasterNameAdmin(ExportActionMixin, admin.ModelAdmin):
 		)
 
 class ProfileRoastAdmin(ExportActionMixin, admin.ModelAdmin):
+
+
+
 	list_display = ('created_date',
 		'profile_name',
 		'mesin',
@@ -294,6 +301,9 @@ class ProfileRoastAdmin(ExportActionMixin, admin.ModelAdmin):
 
 
 class RoastErrorLogsAdmin(ExportActionMixin, admin.ModelAdmin):
+
+
+
 	list_display = ('date_time', 
 		'roastcode',
 		'machine',

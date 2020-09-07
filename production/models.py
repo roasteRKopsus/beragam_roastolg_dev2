@@ -10,15 +10,18 @@ date = date.today()
 STATUS_NOW = [('p','pending'),('c','confirmed')]
 
 class KomposisiBean(models.Model):
+
+
 	tanggal_pembuatan_komposisi = models.DateField(default=date)
 	kode_komposisi = models.CharField(max_length=10, default='-')
-
 	komposisi_blend = models.CharField(max_length=50)
 	catatan = models.CharField(max_length = 200, default='-')
 	def __str__(self):
 		return self.komposisi_blend
 
+
 class DaftarCustomer(models.Model):
+
 
 	nama_customer = models.CharField(max_length=20)
 	no_telp = models.CharField(max_length=20)
@@ -34,12 +37,15 @@ class DaftarCustomer(models.Model):
 
 	total_weight = property(jumlah_pemesanan_volume)
 
+
 	def __str__(self):
 		return self.nama_customer
 
 
 	
 class Pack(models.Model):
+
+
 	pack_name = models.CharField(max_length=20)
 	pack_volume = models.DecimalField(max_digits=9, decimal_places=2)
 	pack_uom = models.CharField(max_length=20)
@@ -48,7 +54,11 @@ class Pack(models.Model):
 		return self.pack_name
 
 
+
+
 class Karyawan(models.Model):
+
+
 	nama_panggilan = models.CharField(max_length=20)
 	nama_lengkap = models.CharField(max_length=20)
 	no_telp = models.CharField(max_length=20)
@@ -65,6 +75,8 @@ class Karyawan(models.Model):
 
 
 class BlendName(models.Model):
+
+
 	nama_blend = models.CharField(max_length=50)
 
 	def __str__(self):
@@ -74,6 +86,8 @@ class BlendName(models.Model):
 
 
 class RunTimeStock(models.Model):
+
+
 	kg = 'Kg'
 	pcs = 'Pcs'
 	blend_name = models.ForeignKey(BlendName, on_delete=models.PROTECT)
@@ -167,8 +181,6 @@ class RunTimeStock(models.Model):
 	forecast_vs_real_kg = property(margin_forecast_to_real_kg)
 	forecast_vs_real_pcs = property(margin_forecast_to_real_pcs)
 	forecast_vs_real_percentage = property(margin_forecast_to_real_percent)
-
-
 	stock_keluar_pack = property(stock_out_pack)
 	stock_keluar_qty = property(stock_out_qty)
 	stock_update_pack = property (stock_runtime_pack)
@@ -179,7 +191,10 @@ class RunTimeStock(models.Model):
 		
 
 
+
 class BlendReport(models.Model):
+
+
 	uom = 'kg'
 	mesin = (('a', 'fr15'), ('b', 'fr25'),('c','fr15-25'))
 	masuk =(('a','pagi'),('b','siang'))
@@ -191,7 +206,6 @@ class BlendReport(models.Model):
 	input_by = models.ForeignKey(Karyawan, on_delete=models.PROTECT)
 	catatan_laporan = models.TextField(max_length=500, default='-')
 	
-
 	def count_input (self):
 		data_input = ProductionDiv.objects.filter(production_date=self)
 		return len(data_input)
@@ -216,7 +230,6 @@ class BlendReport(models.Model):
 		value = float(agtron_avg) / (len(agtron_val)+0.0001)
 		return round(value, 2)
 
-
 	def blend_code(self):
 		return "{0}/{1}/{2}/{3}/{4}".format(self.blend_name,self.machine,self.shift,self.pack_size,self.production_date)
 
@@ -226,13 +239,6 @@ class BlendReport(models.Model):
 	blend_id = property(blend_code)
 	agtron_avg = property(agtron_average)
 
-
-
-
-
-
-
-
 	def __str__(self):
 		return str(self.production_date)
 
@@ -240,6 +246,8 @@ class BlendReport(models.Model):
 
 
 class PackFormInput(models.Model):
+
+
 	pcs = 'Pcs'
 	kg ='Kg'
 	tanggal_dan_jam = models.DateTimeField(default=datetimex)
@@ -256,7 +264,11 @@ class PackFormInput(models.Model):
 		verbose_name = 'Finish Good Input'
 		verbose_name_plural = 'Finish Good Input'
 
+
+
 class BarangKeluar(models.Model):
+
+
 	tanggal_dan_jam = models.DateTimeField(default=datetimex)
 	blend_name = models.ForeignKey(RunTimeStock, on_delete=models.PROTECT)
 	invoice_number = models.CharField(max_length=20, default='-')
@@ -266,7 +278,6 @@ class BarangKeluar(models.Model):
 	volume_quantity = models.DecimalField(max_digits=9, decimal_places=2)
 	catatan = models.TextField(max_length=200, default='-')
 
-
 	def __str__(self):
 		return str(self.blend_name)
 
@@ -274,7 +285,11 @@ class BarangKeluar(models.Model):
 		verbose_name = 'Barang Keluar'
 		verbose_name_plural = 'Barang Keluar'
 
+
+
+
 class ProductionDiv(models.Model):
+
 
 	mesin = (('fr15','fr15'), ('fr25','fr25'))
 	masuk= (('Pagi','Pagi'),('Siang', 'Siang'))
@@ -286,26 +301,21 @@ class ProductionDiv(models.Model):
 	mesin = MultiSelectField(choices=mesin)
 	shift = models.CharField(max_length=60, choices=masuk, default='')
 	pack_size = models.ForeignKey(Pack, null=True, blank=True, on_delete=models.PROTECT)
-	weight = models.DecimalField(max_digits=5, decimal_places=2)
-	
+	weight = models.DecimalField(max_digits=5, decimal_places=2)	
 	agtron_meter = models.DecimalField(max_digits=4, decimal_places=2)
 	production_check_pass = models.BooleanField(default=False)
 	# cupping = models.CharField(max_length=1, choices=STATUS_NOW, default='p')
 	cupping = models.BooleanField(default=False)
 	qc_check_pass= models.BooleanField(default=False)
 	taste_notes = models.CharField(max_length=100, default='-')
-	pack_status = models.BooleanField(default=False)
-	
+	pack_status = models.BooleanField(default=False)	
 	initial_create = models.DateTimeField(auto_now_add=True)
 
-
-	
 	def prepopulated_line(self):
 		return "{0}-{1}-{2}-{3}-set-({4})".format(self.mesin,self.shift,self.production_date, self.production_date.blend_name, self.nomor_set)
 
 	def weight_to_pack(self):
 		return self.weight/self.pack_size
-
 
 	def get_absolute_url(self):
 		return reverse("production:production-detail", kwargs= {'id': self.id})
@@ -327,39 +337,31 @@ class ProductionDiv(models.Model):
 			return "this item need resolution soon"
 		else:
 			return "this item still waiting to be done"
-	# def lead_time (self):
-	# 	if self. 
-
 
 	product_code = property(prepopulated_line)
 	umur_blend = property(_get_umurblend)
 	last_update = property(lead_time)
-
-
 
 	class Meta:
 		verbose_name = 'Blend & Packing'
 		verbose_name_plural = 'Blend & Packing'
 
 
-	# def __str__(self):
-	# 	return  (self.jenis_blend, self.nomor_set)
+
 
 class ProductionSampleBlend(models.Model):
+
+
 	machine = (('fr15', 'fr15'), ('fr25', 'fr25'))
-	nama_blend =models.CharField(max_length=100)
-	
+	nama_blend =models.CharField(max_length=100)	
 	tanggal_pembuatan_sample = models.DateField(auto_now_add=True)
 	roast_date = models.DateField()
 	production_date= models.DateField()
 	mesin = models.CharField(max_length=50, choices=machine, default='')
 	penerima = models.CharField(max_length=10, default='-')
 	diterima_qc= models.BooleanField(default=False)
-
 	catatan = models.CharField(max_length=200, default='-')
 	kode_sample =models.CharField(max_length=100)
-
-	
 
 	def __str__(self):
 		return self.mesin
@@ -367,15 +369,22 @@ class ProductionSampleBlend(models.Model):
 	def __str__(self):
 		return self.kode_sample
 
+
+
 class QCSampleBlend(models.Model):
+
+
 	tanggal_diterima = models.DateField()
 	blend_name = models.ForeignKey(BlendName, on_delete=models.CASCADE)
 	sample_blend=models.ForeignKey(ProductionSampleBlend, on_delete=models.CASCADE)
-	catatan = models.CharField(max_length=150, default='-')
-	
+	catatan = models.CharField(max_length=150, default='-')	
 	qc_acceptance =models.BooleanField(default=False)
 
+
+
 class DisposalReport(models.Model):
+
+
 	unit = 'IDR'
 	kg = 'Kg'
 	tanggal_BAP= models.DateField()
@@ -391,7 +400,6 @@ class DisposalReport(models.Model):
 			kg_total += kg.weight
 		return "\t{:,.0f}".format(kg_total)
 
-
 	def value_loss(self):
 		total_value = DisposalItem.objects.filter(report_id=self)
 		value = 0
@@ -403,7 +411,11 @@ class DisposalReport(models.Model):
 	weight = property(kg_loss)		
 	value = property(value_loss)
 
+
+
 class DisposalItem(models.Model):
+
+
 	idr = 'IDR'
 	kg = 'Kg'
 	report_id = models.ForeignKey(DisposalReport, on_delete=models.PROTECT)
@@ -411,24 +423,25 @@ class DisposalItem(models.Model):
 	production_date = models.DateField()
 	material_name = models.CharField(max_length=50)
 	weight = models.DecimalField(max_digits=6, decimal_places=2)
-	value_per_kg = models.PositiveIntegerField(max_length=9, default=0)
-	
+	value_per_kg = models.PositiveIntegerField(max_length=9, default=0)	
 	note = models.TextField(max_length=300)
 
 	def item_val_loss(self):
 		value = self.weight * self.value_per_kg
 		return "\t{:,.0f}".format(value)
 
-
-
 	total_value= property(item_val_loss)
 
+
+
+
 class Kejadian(models.Model):
+
+
 	tanggal = models.DateTimeField()
 	reporter = models.CharField(max_length=15, default='-')
 	kronologi = models.TextField(max_length=300)
 	resolusi = models.TextField(max_length=300)
-
 
 	class Meta:
 		verbose_name = 'Kejadian'

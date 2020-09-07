@@ -18,6 +18,7 @@ import json
 
 class RunTimeStockResource(resources.ModelResource):
 
+
 	blend_name = fields.Field(
 		attribute='blend_name',
 		column_name='blend_name',
@@ -41,7 +42,10 @@ class RunTimeStockResource(resources.ModelResource):
 	stock_update_quantity = fields.Field(attribute='stock_update_quantity')	
 	kg = fields.Field(attribute='kg')
 
+
+
 class ProductionDivResource(resources.ModelResource):
+
 	
 	production_date = fields.Field(
 		attribute='production_date',
@@ -49,26 +53,21 @@ class ProductionDivResource(resources.ModelResource):
 		widget=ForeignKeyWidget(BlendReport, 'production_date')
 		)
 
-	product_code= fields.Field(attribute='product_code')
-	
+	product_code= fields.Field(attribute='product_code')	
 	roast_date = fields.Field(attribute='roast_date')
-	nomor_set = fields.Field(attribute='nomor_set')
-	
+	nomor_set = fields.Field(attribute='nomor_set')	
 	komposisi = fields.Field(
 		attribute='komposisi',
 		column_name='komposisi',
 		widget=ForeignKeyWidget(KomposisiBean, 'komposisi_blend')
-		)
-	
+		)	
 	mesin = fields.Field(attribute='mesin')
-	shift = fields.Field(attribute='shift')
-	
+	shift = fields.Field(attribute='shift')	
 	pack_size = fields.Field(
 		attribute='pack_size',
 		column_name='beans_name',
 		widget=ForeignKeyWidget(Pack, 'pack_name')
 		)
-	
 	weight = fields.Field(attribute='weight')
 	agtron_meter = fields.Field(attribute='agtron_meter')
 	production_check_pass = fields.Field(attribute='production_check_pass')
@@ -79,9 +78,11 @@ class ProductionDivResource(resources.ModelResource):
 	umur_blend = fields.Field(attribute='umur_blend')
 
 
-class BlendReportResource(resources.ModelResource):
-	production_date= fields.Field(attribute='production_date',)
 
+class BlendReportResource(resources.ModelResource):
+
+
+	production_date= fields.Field(attribute='production_date',)
 	blend_id= fields.Field(attribute='blend_id',)
 	blend_name= fields.Field(attribute='blend_name',
 		column_name='blend_name',
@@ -101,7 +102,10 @@ class BlendReportResource(resources.ModelResource):
 	catatan_laporan= fields.Field(attribute='catatan_laporan')
 
 
+
+
 class BarangKeluarResource(resources.ModelResource):
+
 	
 	tanggal_dan_jam = fields.Field(attribute='tanggal_dan_jam',)
 	blend_name = fields.Field(
@@ -124,7 +128,11 @@ class BarangKeluarResource(resources.ModelResource):
 	catatan = fields.Field(attribute='catatan',)
 
 
+
+
 class PackFormInputResource(resources.ModelResource):
+
+
 	tanggal_dan_jam = fields.Field(attribute='tanggal_dan_jam',)
 	blend_name  = fields.Field(
 		attribute='blend_name',
@@ -138,25 +146,30 @@ class PackFormInputResource(resources.ModelResource):
 		)
 	volume_pack = fields.Field(attribute='volume_pack',)
 	pcs = fields.Field(attribute='pcs',)
-
 	volume_quantity = fields.Field(attribute='volume_quantity',)
 	kg = fields.Field(attribute='kg',)
-
 	catatan = fields.Field(attribute='catatan',)
 
+
+
+
 class DaftarCustomerAdmin(ExportActionMixin, admin.ModelAdmin):
+
+
 	list_display = (
 
 	'nama_customer',
 	'no_telp',
 	'alamat',
 	'pic', 
-	'total_weight'
+	'total_weight')
 
 
-		)
+
 
 class PackFormInputAdmin(ExportActionMixin, admin.ModelAdmin):
+	
+
 	list_display = (
 
 		'tanggal_dan_jam',
@@ -174,6 +187,8 @@ class PackFormInputAdmin(ExportActionMixin, admin.ModelAdmin):
 
 
 class RunTimeStockAdmin(ExportActionMixin, admin.ModelAdmin):
+	
+
 	list_display = (
 
 		'blend_name',
@@ -197,13 +212,17 @@ class RunTimeStockAdmin(ExportActionMixin, admin.ModelAdmin):
 		'kg'
 		)
 
+	
 	list_filter = (
 		'blend_name',
 		'pack_size',
 		)
+	
 	resource_class = RunTimeStockResource
 
 class PackAdmin(ExportActionMixin, admin.ModelAdmin):
+	
+
 	list_display = (
 
 	'pack_name', 
@@ -213,7 +232,10 @@ class PackAdmin(ExportActionMixin, admin.ModelAdmin):
 		)
 
 
+
 class BarangKeluarAdmin(ExportActionMixin, admin.ModelAdmin):
+
+
 	list_display= (
 
 	'tanggal_dan_jam', 
@@ -240,6 +262,8 @@ class BarangKeluarAdmin(ExportActionMixin, admin.ModelAdmin):
 
 
 class KomposisiBeanAdmin(ExportActionMixin, admin.ModelAdmin):
+
+
 	list_display=(
 		
 		'tanggal_pembuatan_komposisi',
@@ -248,17 +272,23 @@ class KomposisiBeanAdmin(ExportActionMixin, admin.ModelAdmin):
 		'catatan'
 )
 
+
 admin.site.register(KomposisiBean, KomposisiBeanAdmin)
 
 
 
 
 class ProductionDivInline(admin.StackedInline):
+
+
 	model = ProductionDiv
 	extra=0
 
 
+
 class KaryawanAdmin(ExportActionMixin, admin.ModelAdmin):
+
+
 	list_display =(
 
 		'nama_panggilan',
@@ -268,7 +298,12 @@ class KaryawanAdmin(ExportActionMixin, admin.ModelAdmin):
 		'status_aktif',
 		)
 
+
+
+
 class BlendReportAdmin(ExportActionMixin, admin.ModelAdmin):
+
+
 	list_display = [
 	'blend_id',
 	'production_date',
@@ -302,8 +337,6 @@ class BlendReportAdmin(ExportActionMixin, admin.ModelAdmin):
 class ProductionDivAdmin(ExportActionMixin, admin.ModelAdmin):
 
 
-
-
 	# inlines = [InlineProductioDiv]
 	list_display = (
 		'id',
@@ -321,14 +354,10 @@ class ProductionDivAdmin(ExportActionMixin, admin.ModelAdmin):
 		'cupping', 'qc_check_pass',
 		'pack_status', 
 		'umur_blend',
-		'lead_time',
-		
-		
+		'lead_time',		
 	)
-
 	readonly_fields = (
 	'id',)
-
 	search_fields = (
 		'tanggal_blend',
 		'jenis_blend'
@@ -343,9 +372,6 @@ class ProductionDivAdmin(ExportActionMixin, admin.ModelAdmin):
 		'production_check_pass',
 		'qc_check_pass',
 	)
-	
-	
-	
 	list_editable = [
 	'agtron_meter', 
 	'taste_notes',
@@ -356,15 +382,17 @@ class ProductionDivAdmin(ExportActionMixin, admin.ModelAdmin):
 	]
 
 	list_display_links = None 
-
 	resource_class = ProductionDivResource
 
+
+
 	def changelist_view(self, request, extra_context=None):
+
+
 		cup_task = ProductionDiv.objects.filter(cupping=False).count()
 		karantina_produksi = ProductionDiv.objects.filter(production_check_pass=False).count()
 		karantina_qc = ProductionDiv.objects.filter(qc_check_pass=False).count()
 		unpack_status = ProductionDiv.objects.filter(pack_status=False).count()
-
 		context = {
 		'cup_task': cup_task,
 		'karantina_produksi' : karantina_produksi,
@@ -375,7 +403,11 @@ class ProductionDivAdmin(ExportActionMixin, admin.ModelAdmin):
 		return super().changelist_view(request, extra_context=context)
 
 
+
+
 class ProductionSampleBlendAdmin(ExportActionMixin, admin.ModelAdmin):
+
+
 	list_display = (
 		
 		'nama_blend',
@@ -388,6 +420,7 @@ class ProductionSampleBlendAdmin(ExportActionMixin, admin.ModelAdmin):
 		 'catatan',
 		 
 		 )
+
 	list_filter = (
 		('tanggal_pembuatan_sample', PastDateRangeFilter),
 		'nama_blend',
@@ -400,7 +433,10 @@ class ProductionSampleBlendAdmin(ExportActionMixin, admin.ModelAdmin):
 	prepopulated_fields = {'kode_sample':('nama_blend','mesin','production_date')}
 
 
+
 class QCSampleBlendAdmin(ExportActionMixin, admin.ModelAdmin):
+
+
 	list_display=(
 		'blend_name',
 		'sample_blend',
@@ -415,15 +451,23 @@ class QCSampleBlendAdmin(ExportActionMixin, admin.ModelAdmin):
 		('tanggal_diterima', PastDateRangeFilter),
 		'sample_blend',
 		'qc_acceptance'
-
-
 		)
+
+
+
 class DisposalItemInline(admin.StackedInline):
+
+
 	model = DisposalItem
 	extra=0
 
+
+
 class DisposalReportAdmin(ExportActionMixin, admin.ModelAdmin):
+
+
 	readonly_fields = ['id',]
+	
 	list_display=(
 		'id',
 		'tanggal_BAP',
@@ -447,7 +491,11 @@ class DisposalReportAdmin(ExportActionMixin, admin.ModelAdmin):
 	]
 
 
+
+
 class DisposalItemAdmin(ExportActionMixin, admin.ModelAdmin):
+
+
 	list_display=(
 			'report_id',
 			# 'created', 
@@ -467,7 +515,12 @@ class DisposalItemAdmin(ExportActionMixin, admin.ModelAdmin):
 		'material_name'
 		)
 
+
+
+
 class KejadianAdmin(ExportActionMixin, admin.ModelAdmin):
+
+
 	list_display = (
 		'tanggal',
 		'reporter',
@@ -481,6 +534,7 @@ class KejadianAdmin(ExportActionMixin, admin.ModelAdmin):
 	'kronologi',
 	'resolusi' 
 )
+
 
 
 
