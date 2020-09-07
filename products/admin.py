@@ -245,7 +245,7 @@ class RoasterAdmin(ExportActionMixin, admin.ModelAdmin):
 	'UOM',
 	'persentase_susut',
 	'roaster_pass_check',
-	'auto_weight_check',
+	'auto_control_weight',
 	'catatan_roaster',
 	'umur_roastbean')
 
