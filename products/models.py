@@ -275,7 +275,7 @@ class Roaster(models.Model):
 		min_loss = float(self.profile_name.weight_lose_min)
 		max_loss = float(self.profile_name.weight_lose_max)
 		safe_loss = []
-		if weight_end >= min_loss or weight_end <= max_loss:
+		if weight_end >= min_loss and weight_end <= max_loss:
 			return True
 		else :
 			return False
