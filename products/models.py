@@ -112,7 +112,7 @@ class BeansGudang(models.Model):
 	overal_cup = models.DecimalField(max_digits=10, decimal_places=3, default=0)
 	# taint_cups = models.PositiveIntegerField(default=0, help_text= 'cup x 2')
 	# fault_cups = models.PositiveIntegerField(default=0, help_text= 'cup x 4')
-	defect = odels.CharField(max_length=100, default='-')
+	defect = models.CharField(max_length=100, default='-')
 	# cup_score = models.DecimalField(max_digits=3, decimal_places=1) # delete cup score into automatically calculate
 	# recomendation = models.TextField(max_length=150, default='-') # add recomendation
 
@@ -174,7 +174,7 @@ class BeansGudang(models.Model):
 		for date in date_list:
 			sekarang = date.tanggal
 		return sekarang
-		
+
 #for next update qc
 	# def final_score (self):
 	# 	frag_val = self.fragrance_score
