@@ -205,7 +205,7 @@ class BeansGudang(models.Model):
 	beans_usage_value = property(stock_value_amount)
 	beans_usage_percent = property(stock_usage_percent)
 	depreciation_average = property(depreciation_in_kilo)
-	final_cup_score = property(final_score)
+	# final_cup_score = property(final_score)
 	last_update = property(time_update)
 
 	def __str__(self):
