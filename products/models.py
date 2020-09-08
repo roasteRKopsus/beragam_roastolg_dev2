@@ -86,7 +86,8 @@ class BeansGudang(models.Model):
 	last_update_stock = models.DateTimeField(default=datetime.datetime.now)
 	# stock_update = models.DecimalField(max_digits=11, decimal_places=2, default=0)
 	qc_check = models.BooleanField(default=False)
-	moisture_check = models.PositiveIntegerField(default=0)
+	moisture_check = models.DecimalField(max_digits= 5, decimal_places= 2, default=0) # revision to decimal
+	# density_check = models.CharField(max_length=30, default= 10) # add density check
 	primary_defect = models.DecimalField(max_digits=10, decimal_places=3, default=0)
 	secondary_defect = models.DecimalField(max_digits=10, decimal_places=3, default=0)
 	aroma_greenbean = models.CharField(max_length=100, default='-')
@@ -106,10 +107,14 @@ class BeansGudang(models.Model):
 	body_notes = models.CharField(max_length=100, default='-')
 	balance_score = models.DecimalField(max_digits=10, decimal_places=3, default=0)
 	uniformity_score = models.DecimalField(max_digits=10, decimal_places=3, default=0)
+	# sweetness_score = models.DecimalField(max_digits= 5, decimal_places=2, default=0) #add sweetness score
 	cleancup_score = models.DecimalField(max_digits=10, decimal_places=3, default=0)
 	overal_cup = models.DecimalField(max_digits=10, decimal_places=3, default=0)
-	defect = models.CharField(max_length=100, default='-')
-	cup_score = models.DecimalField(max_digits=3, decimal_places=1)
+	# taint_cups = models.PositiveIntegerField(default=0, help_text= 'cup x 2')
+	# fault_cups = models.PositiveIntegerField(default=0, help_text= 'cup x 4')
+	defect = odels.CharField(max_length=100, default='-')
+	# cup_score = models.DecimalField(max_digits=3, decimal_places=1) # delete cup score into automatically calculate
+	# recomendation = models.TextField(max_length=150, default='-') # add recomendation
 
 	def stock_roasted(self):
 		roasted_list = Roaster.objects.filter(beans_name=self)
@@ -169,6 +174,29 @@ class BeansGudang(models.Model):
 		for date in date_list:
 			sekarang = date.tanggal
 		return sekarang
+		
+#for next update qc
+	# def final_score (self):
+	# 	frag_val = self.fragrance_score
+	# 	flav_val = self.flavor_score
+	# 	aftertaste_val = self.aftertaste_score
+	# 	acidity_val = self.acidity_score
+	# 	body_val = self.body_score
+	# 	uniformity_val = self.uniformity_score
+	# 	balance_val = self.balance_score
+	# 	cleancup_val = self.cleancup_score
+	# 	sweetness_val = self.sweetness_score
+	# 	overal_val = self.overal_cup
+	# 	total_score = frag_val + flav_val 
+	# 	+ acidity_val + body_val + uniformity_val + balance_val + cleancup_val +sweetness_val + overal_val
+	# 	taint_val = taint_cups * 2
+	# 	fault_cups = fault_cups * 4
+	# 	total_defect_cup = taint_val + fault_cups
+
+	# 	cup_score = float(total_score) - float(total_defect_cup)
+
+	# 	return cup_score
+
 
 	stock_status = property(stock_availability)
 	stock_update = property(stock_updated)
@@ -177,6 +205,7 @@ class BeansGudang(models.Model):
 	beans_usage_value = property(stock_value_amount)
 	beans_usage_percent = property(stock_usage_percent)
 	depreciation_average = property(depreciation_in_kilo)
+	final_cup_score = property(final_score)
 	last_update = property(time_update)
 
 	def __str__(self):
@@ -286,8 +315,8 @@ class Roaster(models.Model):
 	umur_roastbean = property(_get_roastage)
 	auto_control_weight = property(auto_weight_check)
 	
-	def __str__(self):
-		return self.beans_name
+	# def __str__(self):
+	# 	return self.beans_name
 
 
 
