@@ -260,9 +260,11 @@ class RoasterAdmin(ExportActionMixin, admin.ModelAdmin):
 		qs = Roaster.objects.all()
 		froco15 = qs.filter(roast_date = today).filter(mesin= 'froco-15').aggregate(Sum('roasted'))
 		froco25 = qs.filter(roast_date = today).filter(mesin= 'froco-25').aggregate(Sum('roasted'))
+
 		context = {
 		'froco15' : froco15,
 		'froco25' : froco25,
+		
 		}
 		return super().changelist_view(request, extra_context=context)
 
@@ -270,7 +272,7 @@ class RoasterAdmin(ExportActionMixin, admin.ModelAdmin):
 class BlendNameAdmin(ExportActionMixin, admin.ModelAdmin):
 
 
-	list_display = ('blend_name',)
+	list_display = ('blend_name', 'weight_blend')
 	list_filter = ('blend_name', )
 
 
