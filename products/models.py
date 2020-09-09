@@ -12,6 +12,8 @@ from django.utils.html import format_html
 date = datetime.date.today()
 datetimex = datetime.datetime.now()
 
+daily_blend = []
+
 # class BeansGudangManager(models.Manager):
 # 	def stock_availability(self):
 # 		if self.stock_update <= self.initial_stock/20:
@@ -243,6 +245,18 @@ class BlendName(models.Model):
 	def get_blendname():
 		return BlendName.objects.get_or_create(id=1)
 
+	def daily_blend(self):
+		roasted_blend = Roaster.objects.filter(blend_name=self)
+		blend_weight = 0
+		for roast_val in roasted_blend:
+			if roast_val.roast_date == date:
+				blend_weight += roast_val.roasted
+		print('\n\n\t\t', blend_weight)
+		return blend_weight
+
+	weight_blend = property (daily_blend)
+
+
 	def __str__(self):
 		return self.blend_name
 
@@ -322,6 +336,7 @@ class Roaster(models.Model):
 				return True
 			else:
 				return False
+
 
 	machine_weight_loss.boolean=True
 	persentase_susut = property (_get_depreciation)
