@@ -6,6 +6,7 @@ import datetime
 from django.db.models import Sum
 from django.db.models.signals import post_save
 import numpy as np
+from django.utils.html import format_html
 
 
 date = datetime.date.today()
@@ -127,18 +128,22 @@ class BeansGudang(models.Model):
 		taken_list = PengambilanGreenbean.objects.filter(beans_name=self)
 		total_taken_amount = 0
 		for taken in taken_list:
-			total_taken_amount += taken.jumlah_diambil
+			total_taken_amount += taken.jumlah_diambil	
 		return self.inherited_stock + self.initial_stock - total_taken_amount
 
 	def stock_availability(self):
-		if self.stock_update == 0.0 < 1:
-			return "EMPTY"
-		elif self.stock_update < 0.2:
-			return ""
-		elif self.stock_update < (float(self.initial_stock)+float(self.inherited_stock))*((float(self.limit_in_percentage)+0.001)/100):
-			return "LIMIT"
-		elif self.stock_update > (float(self.initial_stock)+float(self.inherited_stock))*((float(self.limit_in_percentage)+0.001)/100):
-			return "AVAILABLE"
+		percent_val = (float(self.initial_stock)+float(self.inherited_stock))*((float(self.limit_in_percentage)+0.0001)/100)
+
+		if float(self.stock_update) <= percent_val and self.stock_update >= 4 :
+			return format_html('<span style="color: #FFA500">STOCK LIMIT</span>')
+
+		elif self.stock_update <= 4:
+			return format_html('<span style="color: #8B0000;;">STOCK EMPTY</span>')
+
+		else:
+			return format_html('<span style="color: #228B22;">STOCK AVAILABLE</span>')
+
+	stock_availability.allow_tags = True
 	
 	def stock_usage_percent(self):
 		update = float(self.stock_update)
@@ -175,6 +180,11 @@ class BeansGudang(models.Model):
 			sekarang = date.tanggal
 		return sekarang
 
+	def stock_update_string(self):
+		rounded_val = round(self.stock_update,2)
+		return f'{rounded_val:,}'
+		# return '{:,2f}'.format(self.stock_update)
+
 #for next update qc
 	# def final_score (self):
 	# 	frag_val = self.fragrance_score
@@ -190,8 +200,8 @@ class BeansGudang(models.Model):
 	# 	total_score = frag_val + flav_val 
 	# 	+ acidity_val + body_val + uniformity_val + balance_val + cleancup_val +sweetness_val + overal_val
 	# 	taint_val = taint_cups * 2
-	# 	fault_cups = fault_cups * 4
-	# 	total_defect_cup = taint_val + fault_cups
+	# 	fault_val = fault_cups * 4
+	# 	total_defect_cup = taint_val + fault_val
 
 	# 	cup_score = float(total_score) - float(total_defect_cup)
 
@@ -200,6 +210,7 @@ class BeansGudang(models.Model):
 
 	stock_status = property(stock_availability)
 	stock_update = property(stock_updated)
+	stock_akhir = property(stock_update_string)
 	roasted = property(stock_roasted)
 	beans_usage_amount = property(stock_usage_amount)
 	beans_usage_value = property(stock_value_amount)
@@ -210,6 +221,8 @@ class BeansGudang(models.Model):
 
 	def __str__(self):
 		return self.beans_name
+
+
 
 	class Meta:
 		verbose_name = 'Bahan Baku'
