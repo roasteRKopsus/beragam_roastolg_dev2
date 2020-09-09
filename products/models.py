@@ -83,7 +83,7 @@ class BeansGudang(models.Model):
 	beans_usage_amount = models.CharField(max_length=50, default='-', db_column='beans_usage_amount', null=True, blank=True)
 	beans_usage_value = models.CharField(max_length=50, default='-', db_column='beans_usage_value', null=True, blank=True)
 	beans_usage_percent = models.CharField(max_length=50, default='-', db_column='beans_usage_percent', null=True, blank=True)
-	last_update_stock = models.DateTimeField(default=datetime.datetime.now)
+	# last_update_stock = models.DateTimeField(default=datetime.datetime.now)
 	# stock_update = models.DecimalField(max_digits=11, decimal_places=2, default=0)
 	qc_check = models.BooleanField(default=False)
 	moisture_check = models.DecimalField(max_digits= 5, decimal_places= 2, default=0) # revision to decimal
