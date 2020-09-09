@@ -113,7 +113,7 @@ class BeansGudang(models.Model):
 	# taint_cups = models.PositiveIntegerField(default=0, help_text= 'cup x 2')
 	# fault_cups = models.PositiveIntegerField(default=0, help_text= 'cup x 4')
 	defect = models.CharField(max_length=100, default='-')
-	# cup_score = models.DecimalField(max_digits=3, decimal_places=1) # delete cup score into automatically calculate
+	cup_score = models.DecimalField(max_digits=3, decimal_places=1) # delete cup score into automatically calculate
 	# recomendation = models.TextField(max_length=150, default='-') # add recomendation
 
 	def stock_roasted(self):
