@@ -75,6 +75,12 @@ class BeansGudang(models.Model):
 	bag = models.PositiveIntegerField()
 	qty_bag = models.PositiveIntegerField()
 	limit_in_percentage = models.DecimalField(max_digits=4, decimal_places=2,default=0)
+# new update
+	fr15_weight_lose_min = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+	fr15_weight_lose_max = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+	fr25_weight_lose_min = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+	fr25_weight_lose_max = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+#end new update
 	inherited_stock = models.DecimalField(max_digits=5, decimal_places=3, default=0.001)
 	initial_stock=models.DecimalField(max_digits=10, decimal_places=2, default=1)
 	price_kilo_idr = models.DecimalField(max_digits=10, decimal_places=2, default=1)
@@ -256,24 +262,7 @@ class RoasterName(models.Model):
 	def get_roastername():
 		return RoasterName.objects.get_or_create(id=1)
 
-
-class ProfileRoast(models.Model):
-
-
-	mesin = (('froco-15', 'froco-15'), ('froco-25', 'froco-25'))
-	created_date = models.DateField()
-	profile_name = models.CharField(max_length=20)
-	mesin = models.CharField(max_length=50, choices=mesin, default='-')
-	beans_name = models.ForeignKey(BeansGudang, on_delete=models.CASCADE)
-	weight_lose_min = models.DecimalField(max_digits=5,decimal_places=2, help_text='in percent')
-	weight_lose_max = models.DecimalField(max_digits=5,decimal_places=2, help_text='in percent')
-
-	def get_profileroast():
-		return RoasterName.objects.get_or_create(id=1)
-
-	def __str__(self):
-		return self.profile_name
-
+#DELETED PROFILE NAME
 
 class Roaster(models.Model):
 
@@ -288,7 +277,7 @@ class Roaster(models.Model):
 	beans_name = models.ForeignKey(BeansGudang, on_delete=models.CASCADE)
 	roastcode = models.CharField(max_length=20, default='-')
 	blend_name = models.ForeignKey(BlendName, on_delete=models.PROTECT, default=1)
-	profile_name = models.ForeignKey(ProfileRoast, on_delete=models.PROTECT, default=1)
+	#delete profile name foreign key
 	roaster =  models.ForeignKey(RoasterName, on_delete=models.PROTECT, default=1)
 	mesin = models.CharField(max_length=50, choices=machine, default='')
 	shift = models.CharField(max_length=60, choices=masuk, default='')
@@ -312,21 +301,32 @@ class Roaster(models.Model):
 	def _get_roastage(self):
 		return(date-self.roast_date)
 
-	def auto_weight_check(self):
-		weight_end = float(self.roasted)
-		min_loss = float(self.profile_name.weight_lose_min)
-		max_loss = float(self.profile_name.weight_lose_max)
-		safe_loss = []
-		if weight_end >= min_loss and weight_end <= max_loss:
-			return True
-		else :
-			return False
+# weight lose embeded to beansgudang
+	def machine_weight_loss(self):
+		weight_end = self.roasted
 
+		if self.mesin == 'froco-15':
+			min_loss_15 = self.beans_name.fr15_weight_lose_min
+			max_loss_15 = self.beans_name.fr15_weight_lose_max
 
-	auto_weight_check.boolean=True
+			if weight_end >= min_loss_15 and weight_end <= max_loss_15:
+				return True
+			else:
+				return False
+
+		elif self.mesin == 'froco-25':
+			min_loss_25 = self.beans_name.fr25_weight_lose_min
+			max_loss_25 = self.beans_name.fr25_weight_lose_max
+
+			if weight_end >= min_loss_25 and weight_end <= max_loss_25:
+				return True
+			else:
+				return False
+
+	machine_weight_loss.boolean=True
 	persentase_susut = property (_get_depreciation)
 	umur_roastbean = property(_get_roastage)
-	auto_control_weight = property(auto_weight_check)
+	auto_control_weight = property(machine_weight_loss)
 	
 	# def __str__(self):
 	# 	return self.beans_name

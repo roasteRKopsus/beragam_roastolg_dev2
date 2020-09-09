@@ -90,7 +90,7 @@ class BeansGudangResource(resources.ModelResource):
 	initial_stock = fields.Field(attribute='initial_stock')
 	price_kilo_idr = fields.Field(attribute='price_kilo_idr')
 	stock_status = fields.Field(attribute='stock_status')
-	stock_update = fields.Field(attribute='stock_update')
+	stock_update = fields.Field(attribute='stock_akhir')
 	beans_usage_amount = fields.Field(attribute='beans_usage_amount')
 	beans_usage_value = fields.Field(attribute='beans_usage_value')
 	beans_usage_percent = fields.Field(attribute='beans_usage_percent')
@@ -171,7 +171,7 @@ class BeansGudangAdmin(ExportActionMixin, admin.ModelAdmin):
 		'bag',
 		'inherited_stock','UOM',
 		'initial_stock','UOM',
-		'stock_update','UOM',
+		'stock_akhir','UOM',
 		'beans_usage_amount',
 		'beans_usage_percent',
 		'beans_usage_value',
@@ -233,7 +233,6 @@ class RoasterAdmin(ExportActionMixin, admin.ModelAdmin):
 	'beans_name',
 	'blend_name',
 	'mesin',
-	'profile_name',
 	'shift',
 	'roaster',
 	'batch_number',
@@ -245,7 +244,7 @@ class RoasterAdmin(ExportActionMixin, admin.ModelAdmin):
 	'UOM',
 	'persentase_susut',
 	'roaster_pass_check',
-	'auto_weight_check',
+	'machine_weight_loss',
 	'catatan_roaster',
 	'umur_roastbean')
 
@@ -284,17 +283,7 @@ class RoasterNameAdmin(ExportActionMixin, admin.ModelAdmin):
 		'address'
 		)
 
-class ProfileRoastAdmin(ExportActionMixin, admin.ModelAdmin):
 
-
-
-	list_display = ('created_date',
-		'profile_name',
-		'mesin',
-		'beans_name',
-		'weight_lose_min',
-		'weight_lose_max')
-	list_filter = ('profile_name', 'beans_name')
 
 
 class RoastErrorLogsAdmin(ExportActionMixin, admin.ModelAdmin):
@@ -317,6 +306,5 @@ admin.site.register(Roaster, RoasterAdmin)
 admin.site.register(PengambilanGreenbean, PengambilanGreenbeanAdmin)
 admin.site.register(BlendName, BlendNameAdmin)
 admin.site.register(RoasterName, RoasterNameAdmin)
-admin.site.register(ProfileRoast, ProfileRoastAdmin)
 admin.site.register(RoastErrorLogs, RoastErrorLogsAdmin)
 
