@@ -206,10 +206,11 @@ class PengambilanGreenbeanAdmin(ExportActionMixin, admin.ModelAdmin):
 	'beans_name',
 	'jumlah_diambil',
 	'UOM',
+	'GB_value',
 	'mesin',
 	'shifts',
 	'pic',
-	'keterangan'
+	'keterangan',
 )
 	list_filter =(
 	

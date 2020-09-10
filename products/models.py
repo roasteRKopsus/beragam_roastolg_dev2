@@ -247,11 +247,12 @@ class BlendName(models.Model):
 
 	def daily_blend(self):
 		roasted_blend = Roaster.objects.filter(blend_name=self)
+		nama_blend = self.blend_name
 		blend_weight = 0
 		for roast_val in roasted_blend:
 			if roast_val.roast_date == date:
 				blend_weight += roast_val.roasted
-		print('\n\n\t\t', blend_weight)
+		jumlah_blend.append((nama_blend, blend_weight))
 		return blend_weight
 
 	weight_blend = property (daily_blend)
@@ -361,6 +362,21 @@ class PengambilanGreenbean(models.Model):
 	shifts = models.CharField(max_length=50, choices=masuk, default='-')
 	pic = models.CharField(max_length=50, default='-')
 	keterangan = models.CharField(max_length=100, default='-')
+
+	#add method untuk value rupiah per pengambilan 
+
+	def value_pengambilan (self):
+		qs = self.beans_name.price_kilo_idr 
+		pengambilan_val = round(self.jumlah_diambil * qs,2)
+		return pengambilan_val
+		
+
+	def rupiah_perpengambilan(self):
+		jumlah_rupiah = self.val_gb
+		return f'Rp {jumlah_rupiah:,}'
+
+	val_gb =property(value_pengambilan)
+	GB_value = property(rupiah_perpengambilan)
 
 	# def save_model(self, request, obj, form, change):
 	# 	obj.beans_name.stock_update - obj.jumlah_diambil
