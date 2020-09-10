@@ -252,7 +252,6 @@ class BlendName(models.Model):
 		for roast_val in roasted_blend:
 			if roast_val.roast_date == date:
 				blend_weight += roast_val.roasted
-		jumlah_blend.append((nama_blend, blend_weight))
 		return blend_weight
 
 	weight_blend = property (daily_blend)
@@ -394,6 +393,25 @@ class RoastErrorLogs(models.Model):
 	machine = models.CharField(max_length=50, choices=mesin, default='')
 	kronology = models.TextField(max_length=140, default= '-')
 	resolution = models.TextField(max_length=140, default='-')
+
+
+# class FinancialForecast(models.Model):
+
+
+# 	created_date = models.DateField()
+# 	periode_bulan = models.CharField(max_length=30, default='-', help_text='Bulan disertai tahun huruf kapital eg; JANUARY 2020')
+# 	catatan = models.TextField(max_length=300, default= '-')
+
+
+# class OverheadItemForecast(models.Model):
+
+# 	created_date = models.DateField(auto_now_add=True)
+# 	nama_item = models.CharField(max_length=50, default='-')
+# 	jumlah_item = models.DecimalField(max_digits=7, decimal_places= 2, default=0)
+# 	total_pengeluaran = models.DecimalField(max_digits=11, decimal_places=2, default=0)
+# 	catatan = models.TextField(max_length=300, default='-')
+
+
 
 
 
