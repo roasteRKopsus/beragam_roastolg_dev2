@@ -161,7 +161,6 @@ class BeansGudangAdmin(ExportActionMixin, admin.ModelAdmin):
 
 
 	list_display = (
-
 		'sample_code',
 		'beans_name',
 		'stock_status',
@@ -180,7 +179,8 @@ class BeansGudangAdmin(ExportActionMixin, admin.ModelAdmin):
 		'depreciation_average',
 
 
-		'last_update'
+		'last_update',
+		'show_this',
 		)
 
 	list_filter=(
@@ -195,6 +195,9 @@ class BeansGudangAdmin(ExportActionMixin, admin.ModelAdmin):
 		
 		)
 
+	list_editable = ['show_this',]
+
+
 	resource_class = BeansGudangResource
 
 
@@ -204,6 +207,7 @@ class PengambilanGreenbeanAdmin(ExportActionMixin, admin.ModelAdmin):
 	list_display =(
 	'tanggal',
 	'beans_name',
+	'blend_name',
 	'jumlah_diambil',
 	'UOM',
 	'GB_value',
@@ -216,6 +220,7 @@ class PengambilanGreenbeanAdmin(ExportActionMixin, admin.ModelAdmin):
 	
 	('tanggal',PastDateRangeFilter),
 	('beans_name', RelatedDropdownFilter),
+	('blend_name', RelatedDropdownFilter),
 	'jumlah_diambil',
 	'mesin',
 	'shifts',
@@ -249,7 +254,7 @@ class RoasterAdmin(ExportActionMixin, admin.ModelAdmin):
 	'catatan_roaster',
 	'umur_roastbean')
 
-	list_filter=(('roast_date', PastDateRangeFilter),'mesin','shift','roaster_pass_check','blend_name', ('beans_name', RelatedDropdownFilter))
+	list_filter=(('roast_date', PastDateRangeFilter),'mesin','shift','roaster_pass_check', ('beans_name', RelatedDropdownFilter),('blend_name', RelatedDropdownFilter))
 	# prepopulated_fields = {'susut':('persentase_susut')}
 
 	resource_class = RoasterResource
@@ -273,8 +278,10 @@ class RoasterAdmin(ExportActionMixin, admin.ModelAdmin):
 class BlendNameAdmin(ExportActionMixin, admin.ModelAdmin):
 
 
-	list_display = ('blend_name', 'weight_blend')
-	list_filter = ('blend_name', )
+	list_display = ('blend_name', 
+		'daily_blend', 'week_1','week_2','week_3',
+		'week_4','week_5','latest','deficiency','monthly_target')
+	list_filter = ('blend_name', 'periode' )
 
 
 class RoasterNameAdmin(ExportActionMixin, admin.ModelAdmin):

@@ -3,6 +3,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 import datetime
+from datetime import timedelta
 from django.db.models import Sum
 from django.db.models.signals import post_save
 import numpy as np
@@ -10,16 +11,20 @@ from django.utils.html import format_html
 
 
 date = datetime.date.today()
+monday = date - datetime.timedelta(days=date.weekday())
 datetimex = datetime.datetime.now()
+
+start_week = date - datetime.timedelta(date.weekday())
+end_week = start_week + datetime.timedelta(7)
+
+month = (('JAN', 'JANUARY'), ('FEB', 'FEBRUARY'), ('MAR', 'MARCH'), ('APR', 'APRIL'),('MAY', 'MAY'), ('JUN', 'JUNE'),
+		('JUL', 'JULY'),('AUG', 'AUGUST'),('SEP', 'SEPTEMBER'),('OKT', 'OKTOBER'),
+		('NOV','NOVEMBER'), ('DEC', 'DECEMBER'),)
+
+week = (('1','1'), ('2','2'),('3','3'),('4','4'),('5','5'))
 
 daily_blend = []
 
-# class BeansGudangManager(models.Manager):
-# 	def stock_availability(self):
-# 		if self.stock_update <= self.initial_stock/20:
-# 			return "STOCK LIMIT"
-# 		elif self.stock_update >= self.initial_stock/20:
-# 			return "STOCK AVAILABLE"
 
 class BeansCode(models.Model):
 
@@ -66,6 +71,7 @@ class BeansGudang(models.Model):
 
 	UOM= 'kg'
 	sample_code = models.ForeignKey(BeansCode, on_delete=models.CASCADE)
+	show_this = models.BooleanField(default=True)
 	beans_name = models.CharField(max_length=50, help_text='format : beans name + lot_number')
 	jenis_kopi = models.CharField(max_length=10)
 	variety = models.CharField(max_length=10)
@@ -239,8 +245,17 @@ class BeansGudang(models.Model):
 
 class BlendName(models.Model):
 
+	
 
+
+	created_date = models.DateField(default=date)
 	blend_name = models.CharField(max_length=50, default=0)
+	periode = models.CharField(max_length=3, choices=month, default='JAN')
+	monthly_target = models.DecimalField(max_digits=7, decimal_places=2, default=0)
+	show_this = models.BooleanField(default=True)
+
+
+
 
 	def get_blendname():
 		return BlendName.objects.get_or_create(id=1)
@@ -254,7 +269,80 @@ class BlendName(models.Model):
 				blend_weight += roast_val.roasted
 		return blend_weight
 
-	weight_blend = property (daily_blend)
+# attention to this stuff
+# weekly blend val
+
+	def week_1(self):
+		roasted_blend = Roaster.objects.filter(blend_name=self).filter(minggu__in='1')
+		nama_blend = self.blend_name
+		blend_weight = 0
+		for roast_val in roasted_blend:
+			blend_weight += roast_val.roasted
+		return blend_weight
+
+	def week_2(self):
+		roasted_blend = Roaster.objects.filter(blend_name=self).filter(minggu__in='2')
+		nama_blend = self.blend_name
+		blend_weight = 0
+		for roast_val in roasted_blend:
+			blend_weight += roast_val.roasted
+		return blend_weight
+
+	def week_3(self):
+		roasted_blend = Roaster.objects.filter(blend_name=self).filter(minggu__in='3')
+		nama_blend = self.blend_name
+		blend_weight = 0
+		for roast_val in roasted_blend:
+			blend_weight += roast_val.roasted
+		return blend_weight
+
+	def week_4(self):
+		roasted_blend = Roaster.objects.filter(blend_name=self).filter(minggu__in='4')
+		nama_blend = self.blend_name
+		blend_weight = 0
+		for roast_val in roasted_blend:
+			blend_weight += roast_val.roasted
+		return blend_weight
+
+	def week_5(self):
+		roasted_blend = Roaster.objects.filter(blend_name=self).filter(minggu__in='5')
+		nama_blend = self.blend_name
+		blend_weight = 0
+		for roast_val in roasted_blend:
+			blend_weight += roast_val.roasted
+		return blend_weight
+
+	def month_production(self):
+		roasted_blend = Roaster.objects.filter(blend_name=self)
+		blend_weight = 0
+		for roast_val in roasted_blend:
+			blend_weight += roast_val.roasted
+		return blend_weight
+
+	def latest_to_target(self):
+		val = self.monthly_target - self.latest
+		return val
+
+
+
+
+			
+
+
+	# def updated_stock (self):
+
+
+
+
+	daily_updated = property (daily_blend)
+	week_1 = property (week_1)
+	week_2 = property (week_2)
+	week_3 = property (week_3)
+	week_4 = property (week_4)
+	week_5 = property (week_5)
+	deficiency = property (latest_to_target)
+	latest = property (month_production)
+	
 
 
 	def __str__(self):
@@ -289,8 +377,9 @@ class Roaster(models.Model):
 	masuk= (('Pagi','Pagi'),('Siang', 'Siang'))
 	roast_date = models.DateField(auto_now_add=True)
 	beans_name = models.ForeignKey(BeansGudang, on_delete=models.CASCADE)
+	minggu = models.CharField(max_length=1, choices=week, default='1')
 	roastcode = models.CharField(max_length=20, default='-')
-	blend_name = models.ForeignKey(BlendName, on_delete=models.PROTECT, default=1)
+	blend_name = models.ForeignKey(BlendName, on_delete=models.PROTECT, default=1, limit_choices_to = {'show_this' : True}) #limit choices
 	#delete profile name foreign key
 	roaster =  models.ForeignKey(RoasterName, on_delete=models.PROTECT, default=1)
 	mesin = models.CharField(max_length=50, choices=machine, default='')
@@ -350,12 +439,16 @@ class Roaster(models.Model):
 
 class PengambilanGreenbean(models.Model):
 
+	#blend_names_embeded to pengambilan_greenbean
+
 
 	UOM = 'kg'
 	machine = (('froco-15', 'froco-15'), ('froco-25', 'froco-25'),('non-machine','non-machine'))
 	masuk= (('Pagi','Pagi'),('Siang', 'Siang'))
 	tanggal = models.DateTimeField()
-	beans_name = models.ForeignKey(BeansGudang, on_delete=models.CASCADE)
+	beans_name = models.ForeignKey(BeansGudang, on_delete=models.CASCADE, limit_choices_to = {'show_this' : True})
+	blend_name = models.ForeignKey(BlendName, on_delete=models.PROTECT, default=1, limit_choices_to = {'show_this' : True})
+	minggu = models.CharField(max_length=1, choices=week, default='1')
 	jumlah_diambil = models.DecimalField(max_digits=10, decimal_places=2)
 	mesin = models.CharField(max_length=50, choices=machine, default='-')
 	shifts = models.CharField(max_length=50, choices=masuk, default='-')
@@ -395,21 +488,62 @@ class RoastErrorLogs(models.Model):
 	resolution = models.TextField(max_length=140, default='-')
 
 
-# class FinancialForecast(models.Model):
+# start new def
+# adding forecast and finance section
+
+class FinancialForecast(models.Model):
 
 
-# 	created_date = models.DateField()
-# 	periode_bulan = models.CharField(max_length=30, default='-', help_text='Bulan disertai tahun huruf kapital eg; JANUARY 2020')
-# 	catatan = models.TextField(max_length=300, default= '-')
+	created_date = models.DateField()
+	periode_bulan = models.CharField(max_length=30, default='-', help_text='Bulan disertai tahun huruf kapital eg; JANUARY 2020')
+	work_days = models.PositiveIntegerField(default=1)
+	catatan = models.TextField(max_length=300, default= '-')
+
+	def val_overhead(self):
+		overhead_item = OverheadItemForecast.objects.filter(parent_id = self)
+		overhead_val = 0
+		for cost in overhead_item:
+			sum_val = cost.harga_item*cost.jumlah_item
+			overhead_val += sum_val
+		return overhead_val
+
+#function to know daily forcasting daily
+
+	def per_30days_OH(self):
+		daily_oh = self.total_overhead_val / self.work_days
 
 
-# class OverheadItemForecast(models.Model):
 
-# 	created_date = models.DateField(auto_now_add=True)
-# 	nama_item = models.CharField(max_length=50, default='-')
-# 	jumlah_item = models.DecimalField(max_digits=7, decimal_places= 2, default=0)
-# 	total_pengeluaran = models.DecimalField(max_digits=11, decimal_places=2, default=0)
-# 	catatan = models.TextField(max_length=300, default='-')
+
+
+
+	def readable_total_overhead(self):
+		return f'Rp {self.total_overhead_val:,}'
+
+
+
+	total_overhead_val = property(val_overhead)
+	total_overhead = property(readable_total_overhead)
+
+
+class OverheadForecast(models.Model):
+	created_date = models.DateField()
+	# periode_bulan = models.ForeignKey()
+
+class OverheadItemForecast(models.Model):
+
+	# parent_id = models.ForeignKey(FinancialForecast, on_delete=models.PROTECT)
+	created_date = models.DateField(auto_now_add=True)
+	nama_item = models.CharField(max_length=50, default='-')
+	harga_item = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+	jumlah_item = models.DecimalField(max_digits=7, decimal_places= 2, default=0)
+	total_pengeluaran = models.DecimalField(max_digits=11, decimal_places=2, default=0)
+	catatan = models.TextField(max_length=300, default='-')
+
+
+ 
+
+
 
 
 
