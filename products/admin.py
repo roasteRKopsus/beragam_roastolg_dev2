@@ -278,10 +278,12 @@ class RoasterAdmin(ExportActionMixin, admin.ModelAdmin):
 class BlendNameAdmin(ExportActionMixin, admin.ModelAdmin):
 
 
-	list_display = ('blend_name', 
+	list_display = ('blend_name','show_this', 
 		'daily_blend', 'week_1','week_2','week_3',
 		'week_4','week_5','latest','deficiency','monthly_target')
 	list_filter = ('blend_name', 'periode' )
+
+	list_editable = ['show_this']
 
 
 class RoasterNameAdmin(ExportActionMixin, admin.ModelAdmin):
