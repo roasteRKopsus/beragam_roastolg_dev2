@@ -397,7 +397,7 @@ class Roaster(models.Model):
 	roasted = models.DecimalField(max_digits=19, decimal_places=2)
 	roaster_pass_check = models.BooleanField(default=False)
 	catatan_roaster = models.CharField(max_length=100, default='-')
-	next_process = models.BooleanField(default=True)
+	next_process = models.BooleanField(default=False)
 
 	def get_absolute_url(self):
 		return reverse("products:product-detail", kwargs= {'id': self.id})
