@@ -439,18 +439,22 @@ class Roaster(models.Model):
 		max_loss_25 = self.beans_name.fr25_weight_lose_max
 		
 		if self.mesin == 'froco-15':
+			
 			if self.roasted < min_loss_15:
 				deviasi = min_loss_15 - self.roasted
+				return 'Min : {0} kg - max : {1} kg  - deviasi : {2} kg'.format(min_loss_15, max_loss_15, deviasi)
+
 			elif self.roasted > min_loss_15:
 				deviasi = self.roasted - max_loss_15
-			return 'Min : {0} kg - max : {1} kg  - defiasi : {2} kg'.format(min_loss_15, max_loss_15, deviasi)
+				return 'Min : {0} kg - max : {1} kg  - deviasi : {2} kg'.format(min_loss_15, max_loss_15, deviasi)
 
 		else:
 			if self.roasted < min_loss_25:
 				deviasi = min_loss_15 - self.roasted
+				return 'Min : {0} kg - max : {1} kg  - deviasi : {2} kg'.format(min_loss_25, max_loss_25, deviasi)
 			elif self.roasted > min_loss_25:
 				deviasi = self.roasted - max_loss_15
-			return 'Min : {0} kg - max : {1} kg  - defiasi : {2} kg'.format(min_loss_25, max_loss_25, deviasi)
+				return 'Min : {0} kg - max : {1} kg  - deviasi : {2} kg'.format(min_loss_25, max_loss_25, deviasi)
 
 	def roaster_product_name(self):
 		return ('{0} {1}').format(self.beans_name, self.mesin)
