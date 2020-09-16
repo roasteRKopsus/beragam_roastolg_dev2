@@ -383,7 +383,7 @@ class ProductionDivAdmin(ExportActionMixin, admin.ModelAdmin):
 	]
 
 	list_max_show_all = 2500
-	list_per_page = 150
+	list_per_page = 20
 
 	# form = ProductionDivAdminForm
 
