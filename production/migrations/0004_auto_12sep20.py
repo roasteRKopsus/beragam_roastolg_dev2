@@ -23,10 +23,6 @@ class Migration(migrations.Migration):
             name='tanggal_dan_jam',
             field=models.DateTimeField(default=datetime.datetime(2020, 9, 12, 6, 35, 34, 146500, tzinfo=utc)),
         ),
-        migrations.RemoveField(
-            model_name='productiondiv',
-            name='roasted_material',
-        ),
         migrations.AddField(
             model_name='productiondiv',
             name='roasted_material',

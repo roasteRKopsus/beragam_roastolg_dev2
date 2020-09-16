@@ -19,11 +19,6 @@ class Migration(migrations.Migration):
             name='production_process',
             field=models.BooleanField(default=True),
         ),
-        migrations.AddField(
-            model_name='productiondiv',
-            name='roasted_material',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.PROTECT, to='products.Roaster'),
-        ),
         migrations.AlterField(
             model_name='barangkeluar',
             name='tanggal_dan_jam',
