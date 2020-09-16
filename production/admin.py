@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.shortcuts import render
 from .models import *
+from .forms import *
+from django import forms
 from django.contrib.admin import DateFieldListFilter
 from import_export.admin import ImportExportModelAdmin
 from import_export.admin import ExportActionMixin
@@ -12,7 +14,14 @@ from django.forms.models import model_to_dict
 from import_export import fields, resources
 from import_export.widgets import ForeignKeyWidget
 from django.db.models import Count
+from django.db import models
 import json
+from products.models import Roaster
+from django_admin_listfilter_dropdown.filters import ( DropdownFilter, ChoiceDropdownFilter, RelatedDropdownFilter)
+
+date = date.today()
+
+
 
 
 
@@ -269,13 +278,12 @@ class KomposisiBeanAdmin(ExportActionMixin, admin.ModelAdmin):
 		'tanggal_pembuatan_komposisi',
 		'kode_komposisi',
 		'komposisi_blend',
-		'catatan'
+		'catatan',
+		'jumlah_data'
 )
 
 
 admin.site.register(KomposisiBean, KomposisiBeanAdmin)
-
-
 
 
 class ProductionDivInline(admin.StackedInline):
@@ -299,63 +307,48 @@ class KaryawanAdmin(ExportActionMixin, admin.ModelAdmin):
 		)
 
 
+class RoastedMaterialInline(admin.StackedInline):
 
 
-class BlendReportAdmin(ExportActionMixin, admin.ModelAdmin):
-
-
-	list_display = [
-	'blend_id',
-	'production_date',
-	'blend_name',
-	'input_by',
-	'blend_recorded',
-	'total_weight','uom',
-	'pack_size',
-	# 'perkiraan_jumlah_pack', #fix this !!!!
-	'catatan_laporan',
-	'agtron_avg']
-
-	list_filter = (('production_date', PastDateRangeFilter),
-	'blend_name',
-	'input_by',)
-
-	inlines = [
-		ProductionDivInline
-	]
-
-
-	resource_class = BlendReportResource
-
-	# def changelist_view(self, request, extra_content=None):
-	
-	# 	chart_data = []
-	# 	return super().changelist_view(request, extra_context=extra_context)
+	model = ProductionDiv.roasted_material.through
+	extra = 1
 
 
 
 class ProductionDivAdmin(ExportActionMixin, admin.ModelAdmin):
 
 
+	
+
+
 	# inlines = [InlineProductioDiv]
-	list_display = (
-		'id',
+	list_display = ('id',
 		'initial_create',
-		'product_code',
 		'production_date',
-		'roast_date', 
 		'nomor_set',
-		'shift', 
+		'roast_date', 
+		'roasted_material_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+		'roasting_shift', 
+		'roasted_batch',
+		'roasted_roastcode',
+		'roasted_catatan',
+		'product_code', 
 		'komposisi',
 		'weight',
+		'total_weight',
+		'kg',
+		'catatan_blend',
+		'catatan_produksi',
 		'agtron_meter',
 		'taste_notes',
 		'production_check_pass', 
 		'cupping', 'qc_check_pass',
 		'pack_status', 
-		'umur_blend',
-		'lead_time',		
-	)
+		'catatan_qc',
+		'parent_id',
+		'lead_time',
+		'umur_blend',)
+
 	readonly_fields = (
 	'id',)
 	search_fields = (
@@ -364,22 +357,46 @@ class ProductionDivAdmin(ExportActionMixin, admin.ModelAdmin):
 	)
 	# list_editable = ['cupping']
 	list_filter = (
-		('production_date', PastDateRangeFilter),
+		('initial_create',PastDateRangeFilter),
 		('roast_date', PastDateRangeFilter),
-		'komposisi',
-		'shift',
+		'roasted_material',
+		'production_date__blend_name_bulanan__blend_name',
+		'mesin',
+		('komposisi', RelatedDropdownFilter),
+		'roasted_material__roaster',
 		'cupping',
 		'production_check_pass',
 		'qc_check_pass',
 	)
+
+	exclude = ['cupping', 'qc_check_pass', 'taste_notes', 'pack_status', 'catatan_qc']
+
+
 	list_editable = [
 	'agtron_meter', 
 	'taste_notes',
 	'production_check_pass', 
 	'cupping', 
 	'qc_check_pass', 
-	'pack_status'
+	'pack_status',
+	'catatan_qc',
 	]
+
+	list_max_show_all = 2500
+	list_per_page = 150
+
+	# form = ProductionDivAdminForm
+
+	# inlines = [
+	# 		RoastedMaterialInline
+	# 	]
+
+	# exclude = ('roasted_material',)
+	formfield_overrides = {
+		models.ManyToManyField: {'widget': forms.SelectMultiple(attrs={'size':'20', 'style': 'color:red;width:900px;height:400px','rows':7, 'cols':80})}
+		# models.ManyToManyField: {'widget': .Textarea(attrs={'size':'20', 'style': 'color:red;width:450px;height:400px'})},
+	}
+	filter_horizontal = ('roasted_material',)
 
 	list_display_links = None 
 	resource_class = ProductionDivResource
@@ -402,6 +419,46 @@ class ProductionDivAdmin(ExportActionMixin, admin.ModelAdmin):
 
 		return super().changelist_view(request, extra_context=context)
 
+	
+
+class BlendReportAdmin(ExportActionMixin, admin.ModelAdmin):
+
+
+	list_display = [
+	'blend_id',
+	'production_date',
+	'blend_name',
+	'input_by',
+	'blend_recorded',
+	'total_weight','uom',
+	'pack_size',
+	# 'perkiraan_jumlah_pack', #fix this !!!!
+	'catatan_laporan',
+	'agtron_avg',]
+
+	list_filter = (('production_date', PastDateRangeFilter),
+	'blend_name',
+	'input_by',)
+
+	inlines = [
+		ProductionDivInline,
+	]
+
+	exclude = ('roasted_material',)
+
+	resource_class = BlendReportResource
+
+	# def changelist_view(self, request, extra_content=None):
+	
+	# 	chart_data = []
+	# 	return super().changelist_view(request, extra_context=extra_context)
+
+
+
+
+
+
+	
 
 
 
@@ -524,6 +581,7 @@ class KejadianAdmin(ExportActionMixin, admin.ModelAdmin):
 	list_display = (
 		'tanggal',
 		'reporter',
+		'tingkat_urgensi',
 		'kronologi',
 		'resolusi' 
 )
@@ -531,6 +589,7 @@ class KejadianAdmin(ExportActionMixin, admin.ModelAdmin):
 	list_filter = (
 	('tanggal', PastDateRangeFilter),
 	'reporter',
+	'tingkat_urgensi',
 	'kronologi',
 	'resolusi' 
 )

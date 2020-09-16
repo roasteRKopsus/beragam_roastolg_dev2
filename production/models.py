@@ -1,4 +1,9 @@
 from django.db import models
+#trying to one line from roastery
+from products.models import Roaster
+from products.models import BlendName as ProductBlendName
+from django.db.models import Q
+from django.utils.html import format_html, format_html_join
 
 from multiselectfield import MultiSelectField
 from datetime import datetime, timezone, date
@@ -16,8 +21,14 @@ class KomposisiBean(models.Model):
 	kode_komposisi = models.CharField(max_length=10, default='-')
 	komposisi_blend = models.CharField(max_length=50)
 	catatan = models.CharField(max_length = 200, default='-')
+
+	def jumlah_input(self):
+		jumlah_input = ProductionDiv.objects.filter(komposisi=self)
+		return(len(jumlah_input))
+
 	def __str__(self):
 		return self.komposisi_blend
+	jumlah_data = property(jumlah_input)
 
 
 class DaftarCustomer(models.Model):
@@ -202,6 +213,7 @@ class BlendReport(models.Model):
 	machine = MultiSelectField(choices=mesin,)
 	shift = MultiSelectField(choices=masuk)
 	blend_name = models.ForeignKey(RunTimeStock, on_delete=models.PROTECT)
+	blend_name_bulanan = models.ForeignKey(ProductBlendName, on_delete= models.PROTECT, limit_choices_to ={'show_this' : True}, default=1)
 	pack_size = models.ForeignKey(Pack, on_delete=models.PROTECT)
 	input_by = models.ForeignKey(Karyawan, on_delete=models.PROTECT)
 	catatan_laporan = models.TextField(max_length=500, default='-')
@@ -233,14 +245,18 @@ class BlendReport(models.Model):
 	def blend_code(self):
 		return "{0}/{1}/{2}/{3}/{4}".format(self.blend_name,self.machine,self.shift,self.pack_size,self.production_date)
 
+	def readable_blend(self):
+		return ('{0} [{1}]'.format(self.production_date, self.blend_name_bulanan))
+
 	total_weight = property(total_weight)
 	blend_recorded = property(count_input)
 	perkiraan_jumlah_pack = property(packed_form_forcast)
 	blend_id = property(blend_code)
 	agtron_avg = property(agtron_average)
+	readable_blend = property (readable_blend)
 
 	def __str__(self):
-		return str(self.production_date)
+		return str(self.readable_blend)
 
 
 
@@ -290,29 +306,31 @@ class BarangKeluar(models.Model):
 
 class ProductionDiv(models.Model):
 
-
+	kg = ('kg')
 	mesin = (('fr15','fr15'), ('fr25','fr25'))
 	masuk= (('Pagi','Pagi'),('Siang', 'Siang'))
-
-	production_date= models.ForeignKey(BlendReport, on_delete=models.CASCADE)
+	production_date= models.ForeignKey(BlendReport, on_delete=models.CASCADE, limit_choices_to={'production_date': date}  )
 	roast_date = models.DateField(default=date)
-	nomor_set = models.PositiveIntegerField(max_length=50)
-	komposisi = models.ForeignKey(KomposisiBean, on_delete=models.CASCADE)
+	nomor_set = models.PositiveIntegerField(max_length=50,)
+	roasted_material = models.ManyToManyField(Roaster, limit_choices_to = Q(next_process=False))
+	komposisi = models.ForeignKey(KomposisiBean, on_delete=models.CASCADE,)
 	mesin = MultiSelectField(choices=mesin)
-	shift = models.CharField(max_length=60, choices=masuk, default='')
+	# shift = models.CharField(max_length=60, choices=masuk, default='')
 	pack_size = models.ForeignKey(Pack, null=True, blank=True, on_delete=models.PROTECT)
 	weight = models.DecimalField(max_digits=5, decimal_places=2)	
 	agtron_meter = models.DecimalField(max_digits=4, decimal_places=2)
+	production_process = models.BooleanField(default=True)
 	production_check_pass = models.BooleanField(default=False)
-	# cupping = models.CharField(max_length=1, choices=STATUS_NOW, default='p')
 	cupping = models.BooleanField(default=False)
 	qc_check_pass= models.BooleanField(default=False)
 	taste_notes = models.CharField(max_length=100, default='-')
+	catatan_produksi = models.CharField(max_length=100, default = '-')
+	catatan_qc = models.CharField(max_length=100, default='-')
 	pack_status = models.BooleanField(default=False)	
 	initial_create = models.DateTimeField(auto_now_add=True)
 
 	def prepopulated_line(self):
-		return "{0}-{1}-{2}-{3}-set-({4})".format(self.mesin,self.shift,self.production_date, self.production_date.blend_name, self.nomor_set)
+		return "{0}{1}{2}//-set-({3})".format(self.mesin,self.production_date, self.production_date.blend_name, self.nomor_set)
 
 	def weight_to_pack(self):
 		return self.weight/self.pack_size
@@ -328,7 +346,8 @@ class ProductionDiv(models.Model):
 
 	def lead_time(self):
 		if self.pack_status==True:
-			return (datetimex - self.initial_create), "already pack"
+			sekarang = datetimex
+			return (sekarang), "already pack"
 		elif self.cupping ==False:
 			return "item need to be on cup"
 		elif self.qc_check_pass == False:
@@ -338,9 +357,88 @@ class ProductionDiv(models.Model):
 		else:
 			return "this item still waiting to be done"
 
+	def roasted_material_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx(self):
+		qs = self.roasted_material.all()
+		readable_list =[]
+
+		for roasted in qs:
+			gen = roasted.product_name
+			readable_list.append([gen])
+		return format_html_join('\n', "<li value = '1'>{}</li>",
+			readable_list)
+
+	def roasted_batch(self):
+		qs = self.roasted_material.all()
+		readable_list =[]
+
+		for roasted in qs:
+			gen = roasted.roaster_batch_name
+			readable_list.append([gen])
+		return format_html_join('\n', "<li>{}</li>",
+			readable_list)
+
+	def roasted_roastcode(self):
+		qs = self.roasted_material.all()
+		readable_list =[]
+
+		for roasted in qs:
+			gen = roasted.roaster_roastcode_name
+			readable_list.append([gen])
+		return format_html_join('\n', "<li>{}</li>",
+			readable_list)
+
+	def roasted_catatan(self):
+		qs = self.roasted_material.all()
+		readable_list =[]
+		for roasted in qs:
+			gen = roasted.roaster_catatan_name
+			readable_list.append([gen])
+		return format_html_join('\n', "<li>{}</li>",
+			readable_list)
+
+	def roasted_shift(self):
+		qs = self.roasted_material.all()
+		readable_list =[]
+		for roasted in qs:
+			gen = roasted.roaster_shift_name
+			readable_list.append([gen])
+		return format_html_join('\n', "<li>{}</li>",
+			readable_list)
+
+	def weight_from_roaster (self):
+		qs = self.roasted_material.all()
+		total_weight = 0
+		for roasted in qs:
+			total_weight += roasted.roasted
+		return total_weight
+
+	def hide_roaster_item(self) :
+		parent_id = self.roasted_material.all()
+		id_num = []
+		for parent in parent_id:
+			id_num.append(parent.id)
+		return id_num
+
+
+	def catatan_from_blend(self):
+		qs = self.production_date.catatan_laporan
+		return qs
+
+
+
+
+
+
 	product_code = property(prepopulated_line)
 	umur_blend = property(_get_umurblend)
 	last_update = property(lead_time)
+	parent_id = property(hide_roaster_item)
+	catatan_blend = property (catatan_from_blend)
+	roasted_batch = property(roasted_batch)
+	roasting_shift = property(roasted_shift)
+	roasted_roastcode = property(roasted_roastcode)
+	roasted_catatan = property(roasted_catatan)
+	total_weight = property (weight_from_roaster)
 
 	class Meta:
 		verbose_name = 'Blend & Packing'
@@ -437,9 +535,10 @@ class DisposalItem(models.Model):
 
 class Kejadian(models.Model):
 
-
+	jenis = (('B','Biasa'), ('M','Medium'),('P','Parah'),('R','Rutinitas'))
 	tanggal = models.DateTimeField()
 	reporter = models.CharField(max_length=15, default='-')
+	tingkat_urgensi = models.CharField(max_length=1, choices=jenis, default='B')
 	kronologi = models.TextField(max_length=300)
 	resolusi = models.TextField(max_length=300)
 

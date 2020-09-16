@@ -13,6 +13,8 @@ from import_export.widgets import ForeignKeyWidget
 from django.contrib.admin.views.main import ChangeList
 from django.db.models import Count, Sum
 from datetime import date
+from production.admin import RoastedMaterialInline
+
 today = datetime.date.today()
 
 
@@ -162,7 +164,9 @@ class BeansGudangAdmin(ExportActionMixin, admin.ModelAdmin):
 
 	list_display = (
 		'sample_code',
+		'show_this',
 		'beans_name',
+		'cup_score',
 		'stock_status',
 		'vendor_name',
 		'lot_number',
@@ -180,7 +184,8 @@ class BeansGudangAdmin(ExportActionMixin, admin.ModelAdmin):
 
 
 		'last_update',
-		'show_this',
+		
+		
 		)
 
 	list_filter=(
@@ -215,6 +220,7 @@ class PengambilanGreenbeanAdmin(ExportActionMixin, admin.ModelAdmin):
 	'shifts',
 	'pic',
 	'keterangan',
+	
 )
 	list_filter =(
 	
@@ -250,12 +256,23 @@ class RoasterAdmin(ExportActionMixin, admin.ModelAdmin):
 	'UOM',
 	'persentase_susut',
 	'roaster_pass_check',
+	'weight_parameters',
 	'machine_weight_loss',
 	'catatan_roaster',
-	'umur_roastbean')
+	'umur_roastbean',
+	'next_process',
+	'ganti_status',
+	)
+
+
+	list_editable =['next_process']
+
+	exclude = ['next_process']
 
 	list_filter=(('roast_date', PastDateRangeFilter),'mesin','shift','roaster_pass_check', ('beans_name', RelatedDropdownFilter),('blend_name', RelatedDropdownFilter))
 	# prepopulated_fields = {'susut':('persentase_susut')}
+
+	list_max_show_all = 2500
 
 	resource_class = RoasterResource
 
@@ -273,6 +290,10 @@ class RoasterAdmin(ExportActionMixin, admin.ModelAdmin):
 		
 		}
 		return super().changelist_view(request, extra_context=context)
+
+		inlines = [
+			RoastedMaterialInline
+		]
 
 
 class BlendNameAdmin(ExportActionMixin, admin.ModelAdmin):
@@ -311,7 +332,6 @@ class RoastErrorLogsAdmin(ExportActionMixin, admin.ModelAdmin):
 
 
 
-
 admin.site.register(BeansCode, BeansCodeAdmin)
 admin.site.register(BeansGudang, BeansGudangAdmin)
 admin.site.register(Roaster, RoasterAdmin)
@@ -319,4 +339,5 @@ admin.site.register(PengambilanGreenbean, PengambilanGreenbeanAdmin)
 admin.site.register(BlendName, BlendNameAdmin)
 admin.site.register(RoasterName, RoasterNameAdmin)
 admin.site.register(RoastErrorLogs, RoastErrorLogsAdmin)
+
 

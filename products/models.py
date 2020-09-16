@@ -8,6 +8,8 @@ from django.db.models import Sum
 from django.db.models.signals import post_save
 import numpy as np
 from django.utils.html import format_html
+import production
+
 
 
 date = datetime.date.today()
@@ -122,14 +124,14 @@ class BeansGudang(models.Model):
 	body_notes = models.CharField(max_length=100, default='-')
 	balance_score = models.DecimalField(max_digits=10, decimal_places=3, default=0)
 	uniformity_score = models.DecimalField(max_digits=10, decimal_places=3, default=0)
-	# sweetness_score = models.DecimalField(max_digits= 5, decimal_places=2, default=0) #add sweetness score
+	sweetness_score = models.DecimalField(max_digits= 5, decimal_places=2, default=0) #add sweetness score
 	cleancup_score = models.DecimalField(max_digits=10, decimal_places=3, default=0)
 	overal_cup = models.DecimalField(max_digits=10, decimal_places=3, default=0)
-	# taint_cups = models.PositiveIntegerField(default=0, help_text= 'cup x 2')
-	# fault_cups = models.PositiveIntegerField(default=0, help_text= 'cup x 4')
+	taint_cups = models.PositiveIntegerField(default=0, help_text= 'cup x 2')
+	fault_cups = models.PositiveIntegerField(default=0, help_text= 'cup x 4')
 	defect = models.CharField(max_length=100, default='-')
 	cup_score = models.DecimalField(max_digits=3, decimal_places=1) # delete cup score into automatically calculate
-	# recomendation = models.TextField(max_length=150, default='-') # add recomendation
+	recomendation = models.TextField(max_length=150, default='-') # add recomendation
 
 	def stock_roasted(self):
 		roasted_list = Roaster.objects.filter(beans_name=self)
@@ -182,7 +184,7 @@ class BeansGudang(models.Model):
 		roasted_list = Roaster.objects.filter(beans_name=self)
 		avg_dep = 0
 		for roasted in roasted_list:
-			average_depreciation = round((roasted.raw - roasted.roasted)/roasted.roasted*100,2)
+			average_depreciation = round((roasted.raw - roasted.roasted)/roasted.raw*100,2)
 			avg_dep += average_depreciation
 		value = round(float(avg_dep)/ (len(roasted_list)+0.0001),2)
 		return "{0}\t%".format(value)
@@ -200,26 +202,27 @@ class BeansGudang(models.Model):
 		# return '{:,2f}'.format(self.stock_update)
 
 #for next update qc
-	# def final_score (self):
-	# 	frag_val = self.fragrance_score
-	# 	flav_val = self.flavor_score
-	# 	aftertaste_val = self.aftertaste_score
-	# 	acidity_val = self.acidity_score
-	# 	body_val = self.body_score
-	# 	uniformity_val = self.uniformity_score
-	# 	balance_val = self.balance_score
-	# 	cleancup_val = self.cleancup_score
-	# 	sweetness_val = self.sweetness_score
-	# 	overal_val = self.overal_cup
-	# 	total_score = frag_val + flav_val 
-	# 	+ acidity_val + body_val + uniformity_val + balance_val + cleancup_val +sweetness_val + overal_val
-	# 	taint_val = taint_cups * 2
-	# 	fault_val = fault_cups * 4
-	# 	total_defect_cup = taint_val + fault_val
+	def final_score (self):
+		frag_val = self.fragrance_score
+		flav_val = self.flavor_score
+		aftertaste_val = self.aftertaste_score
+		acidity_val = self.acidity_score
+		body_val = self.body_score
+		uniformity_val = self.uniformity_score
+		balance_val = self.balance_score
+		cleancup_val = self.cleancup_score
+		sweetness_val = self.sweetness_score
+		overal_val = self.overal_cup
+		total_score = frag_val + flav_val 
+		+ acidity_val + body_val + uniformity_val + balance_val + cleancup_val +sweetness_val + overal_val
+		taint_val = self.taint_cups * 2
+		fault_val = self.fault_cups * 4
+		total_defect_cup = taint_val + fault_val
 
-	# 	cup_score = float(total_score) - float(total_defect_cup)
+		total_cup_score = float(total_score) - float(total_defect_cup)
+		BeansGudang.objects.filter(id = self.id).update(cup_score=total_cup_score)
 
-	# 	return cup_score
+		return total_cup_score
 
 
 	stock_status = property(stock_availability)
@@ -232,6 +235,7 @@ class BeansGudang(models.Model):
 	depreciation_average = property(depreciation_in_kilo)
 	# final_cup_score = property(final_score)
 	last_update = property(time_update)
+	coffee_score = property (final_score)
 
 	def __str__(self):
 		return self.beans_name
@@ -320,7 +324,7 @@ class BlendName(models.Model):
 		return blend_weight
 
 	def latest_to_target(self):
-		val = self.monthly_target - self.latest
+		val = self.latest - self.monthly_target 
 		return val
 
 
@@ -393,6 +397,7 @@ class Roaster(models.Model):
 	roasted = models.DecimalField(max_digits=19, decimal_places=2)
 	roaster_pass_check = models.BooleanField(default=False)
 	catatan_roaster = models.CharField(max_length=100, default='-')
+	next_process = models.BooleanField(default=True)
 
 	def get_absolute_url(self):
 		return reverse("products:product-detail", kwargs= {'id': self.id})
@@ -426,11 +431,82 @@ class Roaster(models.Model):
 			else:
 				return False
 
+	def offset_end_celcius(self):
+
+		min_loss_15 = self.beans_name.fr15_weight_lose_min
+		max_loss_15 = self.beans_name.fr15_weight_lose_max
+		min_loss_25 = self.beans_name.fr25_weight_lose_min
+		max_loss_25 = self.beans_name.fr25_weight_lose_max
+		
+		if self.mesin == 'froco-15':
+			if self.roasted < min_loss_15:
+				deviasi = min_loss_15 - self.roasted
+			elif self.roasted > min_loss_15:
+				deviasi = self.roasted - max_loss_15
+			return 'Min : {0} kg - max : {1} kg  - defiasi : {2} kg'.format(min_loss_15, max_loss_15, deviasi)
+
+		else:
+			if self.roasted < min_loss_25:
+				deviasi = min_loss_15 - self.roasted
+			elif self.roasted > min_loss_25:
+				deviasi = self.roasted - max_loss_15
+			return 'Min : {0} kg - max : {1} kg  - defiasi : {2} kg'.format(min_loss_25, max_loss_25, deviasi)
+
+	def roaster_product_name(self):
+		return ('{0} {1}').format(self.beans_name, self.mesin)
+
+	def roaster_shift(self):
+		return ('{0}-{1}').format(self.shift, self.roaster)
+
+	def roaster_batch_number(self):
+		return ('{0}').format(self.batch_number,)
+
+	def roaster_roastcode_num(self):
+		return ('{0}').format(self.roastcode,)
+
+	def roaster_mesin(self):
+		return ('{0}'.format(self.mesin))
+
+	def roaster_catatan_roaster(self):
+		return ('{0}').format(self.catatan_roaster)
+
+
+
+
+	def change_status(self):
+		qs = production.models.ProductionDiv.objects.filter(roasted_material = self)
+		self_id = self.id
+		print(qs)
+		already_inprocess = self.next_process
+		for q in qs:
+
+			if q.production_process == True:
+			# self.next_process == True
+				self.next_process = True
+				Roaster.objects.filter(id = self_id).update(next_process=True)
+			elif q.production_process != exist(): 
+				Roaster.objects.filter(id = self_id).update(next_process=False)
+				self.next_process = False
+				
+		return(self.next_process)
+
+	def __str__(self):
+		return self.product_name
+
 
 	machine_weight_loss.boolean=True
 	persentase_susut = property (_get_depreciation)
 	umur_roastbean = property(_get_roastage)
 	auto_control_weight = property(machine_weight_loss)
+	product_name = property (roaster_product_name)
+	roaster_batch_name = property(roaster_batch_number)
+	roaster_roastcode_name = property(roaster_roastcode_num)
+	roaster_mesin_name = property(roaster_mesin)
+	roaster_catatan_name = property(roaster_catatan_roaster)
+	roaster_shift_name = property(roaster_shift)
+	weight_parameters = property (offset_end_celcius)
+
+	ganti_status = property (change_status)
 	
 	# def __str__(self):
 	# 	return self.beans_name
@@ -469,6 +545,7 @@ class PengambilanGreenbean(models.Model):
 
 	val_gb =property(value_pengambilan)
 	GB_value = property(rupiah_perpengambilan)
+
 
 	# def save_model(self, request, obj, form, change):
 	# 	obj.beans_name.stock_update - obj.jumlah_diambil
