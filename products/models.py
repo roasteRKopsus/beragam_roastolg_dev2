@@ -457,7 +457,7 @@ class Roaster(models.Model):
 				return 'Min : {0} kg - max : {1} kg  - deviasi : {2} kg'.format(min_loss_25, max_loss_25, deviasi)
 
 	def roaster_product_name(self):
-		return ('{0} {1} Roast Date : {2} batch : {3} shift: {4}').format(self.beans_name, self.roast_date, self.mesin, self.batch_number, self.shift)
+		return ('{0} RD:{1}{2}{3}{4}').format(self.beans_name, self.roast_date, self.mesin, self.batch_number, self.shift)
 
 	def roaster_shift(self):
 		return ('{0}-{1}').format(self.shift, self.roaster)
