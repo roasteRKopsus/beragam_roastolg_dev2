@@ -1,0 +1,16 @@
+.selector-available,
+.selector-chosen {
+    width: 400px;
+}
+
+.selector .selector-available input {
+    width: 300px;
+}
+
+.selector select {
+    width: 400px;
+}
+
+.selector {
+    width: 450px;
+}
