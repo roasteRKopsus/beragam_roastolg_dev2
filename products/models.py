@@ -74,7 +74,7 @@ class BeansGudang(models.Model):
 	UOM= 'kg'
 	sample_code = models.ForeignKey(BeansCode, on_delete=models.CASCADE)
 	show_this = models.BooleanField(default=True)
-	beans_name = models.CharField(max_length=50, help_text='format : beans name + lot_number')
+	beans_name = models.CharField(max_length=50, help_text='GUNAKAN HURUF KAPITAL ! format : BEANS NAME + lot_number')
 	jenis_kopi = models.CharField(max_length=10)
 	variety = models.CharField(max_length=10)
 	origin = models.CharField(max_length=10)
@@ -381,7 +381,7 @@ class Roaster(models.Model):
 	masuk= (('Pagi','Pagi'),('Siang', 'Siang'))
 	roast_date = models.DateField(auto_now_add=True)
 	beans_name = models.ForeignKey(BeansGudang, on_delete=models.CASCADE)
-	minggu = models.CharField(max_length=1, choices=week, default='1')
+	minggu = models.CharField(max_length=1, choices=week, default='1', help_text='SERING TERJADI KESALAHAN MOHON DIPERHATIKAN')
 	roastcode = models.CharField(max_length=20, default='-')
 	blend_name = models.ForeignKey(BlendName, on_delete=models.PROTECT, default=1, limit_choices_to = {'show_this' : True}) #limit choices
 	#delete profile name foreign key
@@ -457,7 +457,7 @@ class Roaster(models.Model):
 				return 'Min : {0} kg - max : {1} kg  - deviasi : {2} kg'.format(min_loss_25, max_loss_25, deviasi)
 
 	def roaster_product_name(self):
-		return ('{0} {1} batch : {2}').format(self.beans_name, self.mesin, self.batch_number)
+		return ('{0} {1} Roast Date : {2} batch : {3} shift: {4}').format(self.beans_name, self.roast_date, self.mesin, self.batch_number, self.shift)
 
 	def roaster_shift(self):
 		return ('{0}-{1}').format(self.shift, self.roaster)
