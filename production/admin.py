@@ -393,7 +393,7 @@ class ProductionDivAdmin(ExportActionMixin, admin.ModelAdmin):
 
 	# exclude = ('roasted_material',)
 	formfield_overrides = {
-		models.ManyToManyField: {'widget': forms.SelectMultiple(attrs={'size':'20', 'style': 'color:red;width:900px;height:400px','rows':7, 'cols':80})}
+		models.ManyToManyField: {'widget': forms.SelectMultiple(attrs={'size':'20', 'style': 'color:red;width:1100px;height:400px','rows':7, 'cols':80})}
 		# models.ManyToManyField: {'widget': .Textarea(attrs={'size':'20', 'style': 'color:red;width:450px;height:400px'})},
 	}
 	filter_horizontal = ('roasted_material',)

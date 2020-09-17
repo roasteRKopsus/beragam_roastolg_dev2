@@ -36,3 +36,4 @@ class Migration(migrations.Migration):
             field=models.CharField(choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5')], default='1', help_text='SERING TERJADI KESALAHAN MOHON DIPERHATIKAN', max_length=1),
         ),
     ]
+#DONE UPDATED 17 sep 20
