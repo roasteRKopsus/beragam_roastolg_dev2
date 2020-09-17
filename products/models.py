@@ -389,7 +389,7 @@ class Roaster(models.Model):
 	mesin = models.CharField(max_length=50, choices=machine, default='')
 	shift = models.CharField(max_length=60, choices=masuk, default='')
 	batch_number = models.PositiveIntegerField(max_length=50)
-	set_number = models.PositiveIntegerField(max_length=5, default=0)
+	set_number = models.PositiveIntegerField(max_length=5,)
 	beans_color = models.CharField(max_length=50, choices=warna_biji, default='')
 	density = models.DecimalField(max_digits=19, decimal_places=3, default=0)
 	moisture_content = models.DecimalField(max_digits=19, decimal_places=1, default=0, )
