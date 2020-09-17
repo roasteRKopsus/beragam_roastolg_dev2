@@ -6,13 +6,13 @@
 }
 
 .selector select {
-    width: 900px;
+    width: 1300px;
     height: 17.2em;
 }
 
 .selector-available, .selector-chosen {
     float: left;
-    width: 380px;
+    width: 700px;
     text-align: center;
     margin-bottom: 5px;
 }
