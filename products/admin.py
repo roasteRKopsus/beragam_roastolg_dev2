@@ -248,6 +248,7 @@ class RoasterAdmin(ExportActionMixin, admin.ModelAdmin):
 	'shift',
 	'roaster',
 	'batch_number',
+	'set_number',
 	'roastcode',
 	'moisture_content',
 	'raw',
@@ -272,7 +273,7 @@ class RoasterAdmin(ExportActionMixin, admin.ModelAdmin):
 	list_filter=(('roast_date', PastDateRangeFilter),'mesin','shift','roaster_pass_check', ('beans_name', RelatedDropdownFilter),('blend_name', RelatedDropdownFilter))
 	# prepopulated_fields = {'susut':('persentase_susut')}
 
-	list_max_show_all = 2500
+	list_max_show_all = 1000
 
 	resource_class = RoasterResource
 

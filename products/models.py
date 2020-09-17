@@ -388,8 +388,8 @@ class Roaster(models.Model):
 	roaster =  models.ForeignKey(RoasterName, on_delete=models.PROTECT, default=1)
 	mesin = models.CharField(max_length=50, choices=machine, default='')
 	shift = models.CharField(max_length=60, choices=masuk, default='')
-	process = models.CharField(max_length=50, choices=post_harvest, default='')
 	batch_number = models.PositiveIntegerField(max_length=50)
+	set_number = models.PositiveIntegerField(max_length=5, default=0)
 	beans_color = models.CharField(max_length=50, choices=warna_biji, default='')
 	density = models.DecimalField(max_digits=19, decimal_places=3, default=0)
 	moisture_content = models.DecimalField(max_digits=19, decimal_places=1, default=0, )
@@ -448,7 +448,7 @@ class Roaster(models.Model):
 				deviasi = self.roasted - max_loss_15
 				return 'Min : {0} kg - max : {1} kg  - deviasi : {2} kg'.format(min_loss_15, max_loss_15, deviasi)
 
-		else:
+		elif self.mesin == 'froco-25':
 			if self.roasted < min_loss_25:
 				deviasi = min_loss_15 - self.roasted
 				return 'Min : {0} kg - max : {1} kg  - deviasi : {2} kg'.format(min_loss_25, max_loss_25, deviasi)
