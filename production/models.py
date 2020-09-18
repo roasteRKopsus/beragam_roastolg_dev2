@@ -510,6 +510,9 @@ class DisposalReport(models.Model):
 	weight = property(kg_loss)		
 	value = property(value_loss)
 
+	def __str__(self):
+		return self.note
+
 
 
 class DisposalItem(models.Model):

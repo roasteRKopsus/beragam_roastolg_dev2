@@ -19,3 +19,4 @@ class Migration(migrations.Migration):
             field=models.CharField(choices=[('B', 'Biasa'), ('M', 'Medium'), ('P', 'Parah'), ('R', 'Rutinitas')], default='B', max_length=1),
         ),
     ]
+#done updated 16 sep 20
