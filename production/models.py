@@ -8,7 +8,6 @@ from django.utils.html import format_html, format_html_join
 from multiselectfield import MultiSelectField
 from datetime import datetime, timezone, date, timedelta
 import pytz
-timezone.
 datetimex = datetime.now()
 
 jakarta_time = pytz.timezone("Asia/Jakarta")
