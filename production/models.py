@@ -6,12 +6,14 @@ from django.db.models import Q
 from django.utils.html import format_html, format_html_join
 
 from multiselectfield import MultiSelectField
-from datetime import datetime, timezone, date
+from datetime import datetime, timezone, date, timedelta
+import pytz
+timezone.
+datetimex = datetime.now()
 
+jakarta_time = pytz.timezone("Asia/Jakarta")
 
-datetimex = datetime.now(timezone.utc)
-
-date = date.today()
+date = date.today() - timedelta(days=1)
 STATUS_NOW = [('p','pending'),('c','confirmed')]
 
 class KomposisiBean(models.Model):
