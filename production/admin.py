@@ -568,7 +568,7 @@ class DisposalItemAdmin(ExportActionMixin, admin.ModelAdmin):
 		)
 
 	list_filter =(
-		('report_id',
+		('report_id__note',
 		'production_date',PastDateRangeFilter),
 		'material_name',
 
