@@ -403,7 +403,7 @@ class Roaster(models.Model):
 		return reverse("products:product-detail", kwargs= {'id': self.id})
 
 	def _get_depreciation(self):
-		value = round(((self.raw+0.0001) - self.roasted)/self.raw*100 ,2)
+		value = round(((float(self.raw)+0.0001) - float(self.roasted))/float(self.raw)*100 ,2)
 		return "{0}\t %".format(value)
 
 	def _get_roastage(self):
